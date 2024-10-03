@@ -15,44 +15,44 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  name       String?
-  password   String?
-  BlogMaster BlogMaster[]
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String?
+  // BlogMaster BlogMaster[]
 }
 
 model Tag {
-  id       Int        @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   name     String?
-  isActive Boolean    @default(true)
-  BlogTags BlogTags[]
+  isActive Boolean @default(true)
+  // BlogTags BlogTags[]
 }
 
 model BlogMaster {
-  id           Int           @id @default(autoincrement())
-  title        String        @unique
-  composedById Int?
-  composedBy   User?         @relation(fields: [composedById], references: [id])
-  composedDate DateTime?
-  isPublished  Boolean?      @default(false)
-  BlogDetails  BlogDetails[]
-  BlogTags     BlogTags[]
+  // id           Int           @id @default(autoincrement())
+  title String @unique
+  // composedById Int?
+  // composedBy   User?         @relation(fields: [composedById], references: [id])
+  // composedDate DateTime?
+  // isPublished  Boolean?      @default(false)
+  // BlogDetails  BlogDetails[]
+  // BlogTags     BlogTags[]
 }
 
-model BlogDetails {
-  id           Int         @id @default(autoincrement())
-  masterId     Int
-  blogMst      BlogMaster? @relation(fields: [masterId], references: [id])
-  sectionType  String
-  imagePreview String?
-  text         String?
-}
+// model BlogDetails {
+//   id           Int         @id @default(autoincrement())
+//   masterId     Int
+//   blogMst      BlogMaster? @relation(fields: [masterId], references: [id])
+//   sectionType  String
+//   imagePreview String?
+//   text         String?
+// }
 
-model BlogTags {
-  id      Int         @id @default(autoincrement())
-  blogId  Int
-  blogMst BlogMaster? @relation(fields: [blogId], references: [id])
-  tagId   Int
-  tag     Tag?        @relation(fields: [tagId], references: [id])
-}
+// model BlogTags {
+//   id      Int         @id @default(autoincrement())
+//   blogId  Int
+//   blogMst BlogMaster? @relation(fields: [blogId], references: [id])
+//   tagId   Int
+//   tag     Tag?        @relation(fields: [tagId], references: [id])
+// }

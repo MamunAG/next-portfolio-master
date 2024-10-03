@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,13 +10,26 @@ import {
   DialogHeader,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { BlogMaster } from "@prisma/client";
 import Link from "next/link";
+import axios from "axios";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { BlogTable } from "@/app/(root)/admin/blogs/blog-table";
 
 function AdminBlog() {
+  const [blogs, setBlogs] = useState<BlogMaster[]>([]);
+  useEffect(() => {
+    async function getData() {
+      await axios
+        .get("/api/blogs")
+        .then((res) => setBlogs(res.data))
+        .catch((err) => console.log(err));
+    }
+    getData();
+  }, []);
   return (
-    <div className="p-3">
+    <div className="container p-3">
       <div className="flex items-center justify-between border-b pb-2">
         <div>Blogs</div>
         <div>
@@ -22,6 +37,15 @@ function AdminBlog() {
             <Button>Add New Blog</Button>
           </Link>
         </div>
+      </div>
+      <div className="container">
+        {/* {blogs.map((blog) => (
+          <div key={blog.id}>
+            <p>Title: {blog.title} </p>
+            <p>Status: {blog.isPublished ? "Published" : "Not Published"} </p>
+          </div>
+        ))} */}
+        {blogs ? <BlogTable blogs={blogs} /> : null}
       </div>
     </div>
   );

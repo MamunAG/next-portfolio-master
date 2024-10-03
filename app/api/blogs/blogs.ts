@@ -7,19 +7,19 @@ import { HTTPException } from "hono/http-exception";
 const app = new Hono();
 
 app.get("/", async (c) => {
-  const blog = await prismadb.blogMaster.findMany({
-    include: {
-      BlogDetails: true,
-      BlogTags: {
-        include: {
-          tag: true,
-        },
-      },
-    },
-  });
+  const blog = await prismadb.blogMaster.findMany();
   return c.json(blog);
 });
-
+// {
+//   include: {
+//     BlogDetails: true,
+//     BlogTags: {
+//       include: {
+//         tag: true,
+//       },
+//     },
+//   },
+// }
 app.get("/:id", async (c) => {
   const { id } = await c.req.param();
   if (!id) {
