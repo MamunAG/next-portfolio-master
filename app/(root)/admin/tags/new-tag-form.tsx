@@ -1,12 +1,12 @@
 "use client";
 
 import { Tag } from "@prisma/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Save } from "@/actions/tag-actions";
+import { Delete, Save, Update } from "@/actions/tag-actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -24,21 +24,43 @@ import { ReactQueryKey } from "@/utility/react-query-key";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import axios from "axios";
+import { PageAction } from "@/utility/page-actions";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
+  id: z.number().default(0),
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  isActive: z.boolean().default(false),
+  isActive: z.boolean().default(true),
 });
 
-export default function NewTagForm() {
+export default function NewTagForm({
+  data,
+  pageAction,
+}: {
+  data: Tag | undefined;
+  pageAction: string;
+}) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const route = useRouter();
 
+  console.log("tag: ", data);
+
   const mutation = useMutation({
-    mutationFn: (tag: Tag) => Save(tag),
+    mutationFn: (tag: Tag) => {
+      if (pageAction === PageAction.add) {
+        return Save(tag);
+      } else if (pageAction === PageAction.edit) {
+        return Update(tag);
+      } else if (pageAction === PageAction.delete) {
+        return Delete(tag.id);
+      } else {
+        throw new Error("Page Action no found.");
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [ReactQueryKey.tags],
@@ -48,28 +70,29 @@ export default function NewTagForm() {
     onError: (err) => {
       console.log(err.message);
     },
-    // throwOnError: true,
   });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      id: 0,
       name: "",
+      isActive: true,
     },
+    values: data,
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     var data: Tag = {
-      id: 0,
+      id: values.id,
       name: values.name,
       isActive: values.isActive,
     };
-
     // Save(data);
     mutation.mutate(data);
-    console.log(values);
+    // console.log(values);
   }
 
   let errorMessage: string = "";
@@ -88,6 +111,19 @@ export default function NewTagForm() {
         <AlertDescription>{errorMessage}</AlertDescription>
       </Alert>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="id"
+          render={({ field }) => (
+            <FormItem className="hidden">
+              <FormLabel>id</FormLabel>
+              <FormControl>
+                <Input placeholder="id" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="name"
@@ -130,16 +166,33 @@ export default function NewTagForm() {
             <Button
               type="submit"
               disabled={mutation.isPending}
-              className="w-24"
+              className={cn(
+                "w-24",
+                pageAction == PageAction.view ? "hidden" : " "
+              )}
+              variant={
+                pageAction == PageAction.delete ? "destructive" : "default"
+              }
             >
-              Submit
+              {pageAction == PageAction.add
+                ? "Save"
+                : pageAction == PageAction.edit
+                ? "Update"
+                : "Delete"}
             </Button>
             <Button
               type="reset"
               disabled={mutation.isPending}
-              onClick={() => form.reset()}
+              onClick={() => {
+                form.reset();
+                form.clearErrors();
+              }}
               variant={"destructive"}
-              className="w-24"
+              className={cn(
+                "w-24",
+                pageAction == PageAction.view ? "hidden" : "",
+                pageAction == PageAction.delete ? "hidden" : ""
+              )}
             >
               Cancel
             </Button>
@@ -149,7 +202,7 @@ export default function NewTagForm() {
             disabled={mutation.isPending}
             onClick={() => route.push("/admin/tags")}
             variant={"outline"}
-            className="w-24"
+            className={cn("w-24")}
           >
             Back
           </Button>

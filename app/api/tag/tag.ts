@@ -30,22 +30,22 @@ app.get("/:id", async (c) => {
   return c.json(tag);
 });
 
-app.post("/", async (c) => {
-  const { name, description, isActive } = await c.req.json();
+// app.post("/", async (c) => {
+//   const { name, description, isActive } = await c.req.json();
 
-  if (!name) {
-    throw new HTTPException(400, { message: "Name is required" });
-  }
+//   if (!name) {
+//     throw new HTTPException(400, { message: "Name is required" });
+//   }
 
-  const store = await prismadb.tag.create({
-    data: {
-      name,
-      isActive,
-    },
-  });
+//   const store = await prismadb.tag.create({
+//     data: {
+//       name,
+//       isActive,
+//     },
+//   });
 
-  return c.json(store);
-});
+//   return c.json(store);
+// });
 
 app.post("/update/:id", async (c) => {
   const { id: paramId } = await c.req.param();

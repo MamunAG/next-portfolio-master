@@ -10,6 +10,7 @@ import { TagTable } from "@/app/(root)/admin/tags/tag-table";
 import { ReactQueryKey } from "@/utility/react-query-key";
 import TableSkeleton from "@/utility/table-skeleton";
 import { useToast } from "@/components/ui/use-toast";
+import { PageAction } from "@/utility/page-actions";
 
 function Tags() {
   const { toast } = useToast();
@@ -37,7 +38,7 @@ function Tags() {
       <div className="flex items-center justify-between border-b pb-2">
         <div className="font-bold text-2xl">Tags</div>
         <div>
-          <Link href="tags/new-tag">
+          <Link href={`tags/${PageAction.add}`}>
             <Button>Add New Tag</Button>
           </Link>
         </div>
