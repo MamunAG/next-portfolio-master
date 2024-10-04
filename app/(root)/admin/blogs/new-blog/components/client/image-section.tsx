@@ -36,8 +36,13 @@ const ImageSection = ({
         >
           <FiArrowDown /> Move Down
         </Button>
-        <Button size="sm" className="ml-1" variant="outline" onClick={onRemove}>
-          <FiTrash /> Remove
+        <Button
+          size="sm"
+          className="ml-1"
+          variant="destructive"
+          onClick={onRemove}
+        >
+          <FiTrash className="mr-2" /> Remove
         </Button>
       </div>
     </div>

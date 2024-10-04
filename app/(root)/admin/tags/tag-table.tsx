@@ -39,32 +39,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BlogMaster } from "@prisma/client";
+import { Tag } from "@prisma/client";
 
-const columns: ColumnDef<BlogMaster>[] = [
+const columns: ColumnDef<Tag>[] = [
   {
-    // id: "Title",
-    accessorKey: "title",
-    header: "Title",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("title")}</div>
-    ),
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
+
   {
-    // id: "Composed Date",
-    accessorKey: "composedDate",
-    header: "Composed Date",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("composedDate")}</div>
-    ),
-  },
-  {
-    // id: "Is Published",
-    accessorKey: "isPublished",
+    accessorKey: "isActive",
     header: "Status",
     cell: ({ row }) => (
       <div className="capitalize">
-        {row.getValue("isPublished") === true ? "Published" : "Not Published"}
+        {row.getValue("isActive") === true ? "Active" : "Not Active"}
       </div>
     ),
   },
@@ -73,7 +62,7 @@ const columns: ColumnDef<BlogMaster>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const blog = row.original;
+      const tag = row.original;
 
       return (
         <DropdownMenu>
@@ -86,14 +75,14 @@ const columns: ColumnDef<BlogMaster>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(blog.id.toString())}
+              onClick={() => navigator.clipboard.writeText(tag.id.toString())}
             >
-              Copy blog Id
+              Copy tag Id
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View blog</DropdownMenuItem>
-            <DropdownMenuItem>Edit Blog</DropdownMenuItem>
-            <DropdownMenuItem>Delete Blog</DropdownMenuItem>
+            <DropdownMenuItem>View tag</DropdownMenuItem>
+            <DropdownMenuItem>Edit Tag</DropdownMenuItem>
+            <DropdownMenuItem>Delete Tag</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -101,7 +90,7 @@ const columns: ColumnDef<BlogMaster>[] = [
   },
 ];
 
-export function BlogTable({ data }: { data: BlogMaster[] }) {
+export function TagTable({ data }: { data: Tag[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -133,10 +122,10 @@ export function BlogTable({ data }: { data: BlogMaster[] }) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter title..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter name..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

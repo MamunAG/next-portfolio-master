@@ -6,20 +6,20 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
-import { BlogTable } from "@/app/(root)/admin/blogs/blog-table";
+import { TagTable } from "@/app/(root)/admin/tags/tag-table";
 import { ReactQueryKey } from "@/utility/react-query-key";
 import TableSkeleton from "@/utility/table-skeleton";
 import { useToast } from "@/components/ui/use-toast";
 
-function Blogs() {
+function Tags() {
   const { toast } = useToast();
   const {
-    data: blogs,
+    data: tags,
     isError,
     error,
   } = useQuery({
-    queryKey: [ReactQueryKey.blogs],
-    queryFn: async () => (await axios.get("/api/blogs")).data,
+    queryKey: [ReactQueryKey.tags],
+    queryFn: async () => (await axios.get("/api/tag")).data,
   });
 
   if (isError) {
@@ -35,18 +35,18 @@ function Blogs() {
   return (
     <div className="container">
       <div className="flex items-center justify-between border-b pb-2">
-        <div className="font-bold text-2xl">Blogs</div>
+        <div className="font-bold text-2xl">Tags</div>
         <div>
-          <Link href="blogs/new-blog">
-            <Button>Add New Blog</Button>
+          <Link href="tags/new-tag">
+            <Button>Add New Tag</Button>
           </Link>
         </div>
       </div>
       <div className="container mt-10">
-        {blogs ? <BlogTable data={blogs} /> : <TableSkeleton />}
+        {tags ? <TagTable data={tags} /> : <TableSkeleton />}
       </div>
     </div>
   );
 }
 
-export default Blogs;
+export default Tags;

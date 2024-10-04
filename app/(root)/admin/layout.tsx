@@ -10,7 +10,7 @@ function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
         <div className="md:w-1/6">
           <AdminSidebar></AdminSidebar>
         </div>
-        <div className="md:w-5/6 z-30">{children}</div>
+        <div className="md:w-5/6 z-30 p-10">{children}</div>
       </div>
     </>
   );

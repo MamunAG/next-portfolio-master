@@ -1,14 +1,19 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+
 import React, { useState } from "react";
-import { FiFileText, FiImage } from "react-icons/fi";
 import { FaAngleRight } from "react-icons/fa";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import TextSection from "./components/client/text-section";
+import { FiFileText, FiImage } from "react-icons/fi";
+import Link from "next/link";
+import { Tag } from "@prisma/client";
 import { v4 as uid } from "uuid";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import TextSection from "./components/client/text-section";
 import ImageSection from "./components/client/image-section";
+
 function AddNewBlog() {
   interface ISection {
     id: string;
@@ -16,9 +21,11 @@ function AddNewBlog() {
     imagePreview?: string | ArrayBuffer | null;
     text?: string;
   }
+  const [title, setTitle] = useState<string>();
+  const [tags, setTags] = useState<Tag[]>();
   const [sections, setSections] = useState<ISection[]>([]);
 
-  console.log(sections);
+  // console.log(sections);
 
   const addNewSection = (type: string) => {
     if (type == "text") {
@@ -83,8 +90,13 @@ function AddNewBlog() {
     }
   };
 
+  function handleSubmit() {
+    console.log("title: ", title);
+    console.log(sections);
+  }
+
   return (
-    <div className="p-3">
+    <div>
       <div className="flex items-center justify-between border-b pb-2">
         <div className="flex items-center">
           <Link
@@ -107,7 +119,12 @@ function AddNewBlog() {
                   <Label>Title</Label>
                 </th>
                 <th className="p-1">
-                  <Input name="title" placeholder="Title"></Input>
+                  <Input
+                    name="title"
+                    placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  ></Input>
                 </th>
               </tr>
               <tr>
@@ -171,8 +188,15 @@ function AddNewBlog() {
           )
         )}
       </div>
-      <div className="mt-3 text-center">
-        {sections.length > 0 ? <Button variant="default">Save</Button> : ""}
+      <div className="text-left mt-10">
+        <Button
+          variant="default"
+          onClick={handleSubmit}
+          disabled={sections.length > 0 ? false : true}
+          className="w-52"
+        >
+          Save
+        </Button>
       </div>
     </div>
   );

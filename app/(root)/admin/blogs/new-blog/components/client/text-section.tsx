@@ -41,9 +41,9 @@ function TextSection({
             onClick={onRemove}
             size="sm"
             className="ml-1"
-            variant="outline"
+            variant="destructive"
           >
-            <FiTrash></FiTrash> Remove
+            <FiTrash className="mr-2" /> Remove
           </Button>
         </div>
       </div>
