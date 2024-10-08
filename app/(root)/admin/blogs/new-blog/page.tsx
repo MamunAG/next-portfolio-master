@@ -122,9 +122,22 @@ function AddNewBlog() {
   };
 
   function handleSubmit() {
-    console.log("title: ", title);
-    console.log("tags: ", tags);
-    console.log(sections);
+    // console.log("title: ", title);
+    // console.log("tags: ", tags);
+    // console.log(sections);
+
+    const formattedData = {
+      title,
+      BlogTags: tags,
+      BlogDetails: sections
+    }
+    axios.post("http://localhost:3000/api/blogs", formattedData).then(res => 
+    {
+      console.log(res);
+      setSections([]);
+    }
+  ).catch(error => console.log(error));
+
   }
   type TagOption = {
     label: string;
