@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} dark:bg-primary-dark`}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools />
           {children}
           <Toaster />
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </body>
     </html>

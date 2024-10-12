@@ -129,15 +129,15 @@ function AddNewBlog() {
     const formattedData = {
       title,
       BlogTags: tags,
-      BlogDetails: sections
-    }
-    axios.post("http://localhost:3000/api/blogs", formattedData).then(res => 
-    {
-      console.log(res);
-      setSections([]);
-    }
-  ).catch(error => console.log(error));
-
+      BlogDetails: sections,
+    };
+    axios
+      .post("http://localhost:3000/api/blogs", formattedData)
+      .then((res) => {
+        console.log(res);
+        setSections([]);
+      })
+      .catch((error) => console.log(error));
   }
   type TagOption = {
     label: string;

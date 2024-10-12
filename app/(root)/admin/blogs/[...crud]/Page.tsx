@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import NewTagForm from "../new-tag-form";
+import NewTagForm from "../../tags/new-tag-form";
 import { PageAction } from "@/utility/page-actions";
 import { useQuery } from "@tanstack/react-query";
 import { ReactQueryKey } from "@/utility/react-query-key";

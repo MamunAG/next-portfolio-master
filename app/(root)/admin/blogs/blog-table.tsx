@@ -40,72 +40,96 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BlogMaster } from "@prisma/client";
-
-const columns: ColumnDef<BlogMaster>[] = [
-  {
-    // id: "Title",
-    accessorKey: "title",
-    header: "Title",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("title")}</div>
-    ),
-  },
-  {
-    // id: "Composed Date",
-    accessorKey: "composedDate",
-    header: "Composed Date",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("composedDate")}</div>
-    ),
-  },
-  {
-    // id: "Is Published",
-    accessorKey: "isPublished",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("isPublished") === true ? "Published" : "Not Published"}
-      </div>
-    ),
-  },
-
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const blog = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(blog.id.toString())}
-            >
-              Copy blog Id
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View blog</DropdownMenuItem>
-            <DropdownMenuItem>Edit Blog</DropdownMenuItem>
-            <DropdownMenuItem>Delete Blog</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+import { useRouter } from "next/navigation";
+import { PageAction } from "@/utility/page-actions";
 
 export function BlogTable({ data }: { data: BlogMaster[] }) {
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
+  const columns: ColumnDef<BlogMaster>[] = [
+    {
+      // id: "Title",
+      accessorKey: "title",
+      header: "Title",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("title")}</div>
+      ),
+    },
+    {
+      // id: "Composed Date",
+      accessorKey: "composedDate",
+      header: "Composed Date",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("composedDate")}</div>
+      ),
+    },
+    {
+      // id: "Is Published",
+      accessorKey: "isPublished",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className="capitalize">
+          {row.getValue("isPublished") === true ? "Published" : "Not Published"}
+        </div>
+      ),
+    },
+
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const blog = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(blog.id.toString())
+                }
+              >
+                Copy blog Id
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push(`/admin/blogs/${PageAction.view}/${blog.id}`)
+                }
+              >
+                View blog
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push(`/admin/blogs/${PageAction.edit}/${blog.id}`)
+                }
+              >
+                Edit Blog
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push(`/admin/blogs/${PageAction.delete}/${blog.id}`)
+                }
+              >
+                Delete Blog
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
