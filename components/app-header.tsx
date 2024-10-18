@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiSun, FiMoon, FiX, FiMenu } from "react-icons/fi";
@@ -35,11 +36,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { Save } from "@/actions/hire-me-actions";
+import { HireMe } from "@prisma/client";
+import { useToast } from "./ui/use-toast";
+
 function AppHeader() {
+  const currentPath = usePathname();
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [activeTheme, setTheme] = useThemeSwitcher();
-
   function toggleMenu() {
     if (!showMenu) {
       setShowMenu(true);
@@ -48,19 +53,6 @@ function AppHeader() {
     }
   }
 
-  function showHireMeModal() {
-    // if (!showModal) {
-    //   document
-    //     .getElementsByTagName("html")[0]
-    //     .classList.add("overflow-y-hidden");
-    //   setShowModal(true);
-    // } else {
-    //   document
-    //     .getElementsByTagName("html")[0]
-    //     .classList.remove("overflow-y-hidden");
-    //   setShowModal(false);
-    // }
-  }
   return (
     <motion.nav
       initial={{ opacity: 0 }}
@@ -181,14 +173,15 @@ function AppHeader() {
             </Link>
           </div>
           <div className="border-t-2 pt-3 sm:pt-0 sm:border-t-0 border-primary-light dark:border-secondary-dark">
-            <button
+            {/* <button
               onClick={showHireMeModal}
               role="button"
               className="font-general-medium sm:hidden block text-left text-md bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-sm px-4 py-2 mt-2 duration-300 w-24"
               aria-label="Hire Me Button"
             >
               Hire Me
-            </button>
+            </button> */}
+            <HireMeDialog showModal={showModal} setShowModal={setShowModal} />
           </div>
         </div>
 
@@ -198,27 +191,51 @@ function AppHeader() {
             className="block text-left text-lg font-medium text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2"
             aria-label="Projects"
           >
-            <Link href="/projects">Projects</Link>
+            {currentPath.includes("projects") ? (
+              <Link href="/projects">Projects</Link>
+            ) : (
+              <Link href="/projects" className="text-slate-500">
+                Projects
+              </Link>
+            )}
           </div>
           <div
             className="block text-left text-lg font-medium text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2"
             aria-label="About Me"
           >
-            <Link href="/about">About Me</Link>
+            {currentPath.includes("about") ? (
+              <Link href="/about">About Me</Link>
+            ) : (
+              <Link href="/about" className="text-slate-500">
+                About Me
+              </Link>
+            )}
           </div>
 
           <div
             className="block text-left text-lg font-medium text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2"
             aria-label="Contact"
           >
-            <Link href="/contact">Contact</Link>
+            {currentPath.includes("contact") ? (
+              <Link href="/contact">Contact</Link>
+            ) : (
+              <Link href="/contact" className="text-slate-500">
+                Contact
+              </Link>
+            )}
           </div>
 
           <div
             className="block text-left text-lg font-medium text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2"
             aria-label="Blog"
           >
-            <Link href="/blogs">Blog</Link>
+            {currentPath.includes("blogs") ? (
+              <Link href="/blogs">Blog</Link>
+            ) : (
+              <Link href="/blogs" className="text-slate-500">
+                Blog
+              </Link>
+            )}
           </div>
         </div>
 
@@ -232,7 +249,7 @@ function AppHeader() {
             >
               Hire Me
             </button> */}
-            <DialogDemo />
+            <HireMeDialog showModal={showModal} setShowModal={setShowModal} />
           </div>
 
           {/* Theme switcher large screen */}
@@ -258,10 +275,22 @@ function AppHeader() {
     </motion.nav>
   );
 }
-export function DialogDemo() {
+export function HireMeDialog({
+  showModal,
+  setShowModal,
+}: {
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { toast } = useToast();
+
   const FormSchema = z.object({
     name: z.string(),
-    email: z.string().optional(),
+    email: z
+      .string({
+        required_error: "Email is required.",
+      })
+      .optional(),
     contactNo: z.string({
       required_error: "Contact number is required.",
     }),
@@ -270,14 +299,42 @@ export function DialogDemo() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      contactNo: "",
+      address: "",
+    },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    try {
+      const hireMeData: HireMe = {
+        id: 0,
+        name: data.name,
+        email: data.email!,
+        contact: data.contactNo,
+        address: data.address!,
+        createdDate: new Date(),
+      };
+
+      console.log(hireMeData);
+      const savedRequest = Save(hireMeData);
+      form.reset();
+      setShowModal(false);
+
+      console.log(savedRequest);
+      toast({
+        variant: "success",
+        description: "Your request has been sent.",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
         <Button
           className="text-md font-general-medium bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-md px-7 py-5 duration-300"
@@ -309,7 +366,7 @@ export function DialogDemo() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="col-span-4" />
                     </FormItem>
                   )}
                 />
@@ -327,7 +384,7 @@ export function DialogDemo() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="col-span-4" />
                     </FormItem>
                   )}
                 />
@@ -339,14 +396,14 @@ export function DialogDemo() {
                   name="contactNo"
                   render={({ field }) => (
                     <FormItem className="grid grid-cols-4 items-center gap-4">
-                      <FormLabel className="text-right">Contact</FormLabel>
+                      <FormLabel className="text-right">Contact*</FormLabel>
                       <FormControl className="col-span-3">
                         <Input
                           placeholder="Input your contact no in here."
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="col-span-4" />
                     </FormItem>
                   )}
                 />
@@ -366,7 +423,7 @@ export function DialogDemo() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="col-span-4" />
                     </FormItem>
                   )}
                 />
@@ -385,7 +442,7 @@ export function DialogDemo() {
             </div>
             <DialogFooter>
               <Button type="submit" className="w-28">
-                Save
+                Send Request
               </Button>
             </DialogFooter>
           </form>

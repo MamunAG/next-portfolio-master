@@ -56,3 +56,21 @@ model BlogTags {
   tagId   Int
   tag     Tag?        @relation(fields: [tagId], references: [id])
 }
+
+model HireMe {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String?
+  contact     String
+  address     String?
+  createdDate DateTime
+}
+
+model ContactMessage {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  subject     String?
+  message     String?
+  createdDate DateTime
+}

@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import FormInput from "@/components/ui/formInput";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { Save } from "@/actions/contact-message-actions";
+import { ContactMessage } from "@prisma/client";
 
 type contactDataType = {
-  fullName: string;
+  name: string;
   email: string;
   subject: string;
   message: string;
@@ -15,7 +17,7 @@ type contactDataType = {
 function ContactForm() {
   const { toast } = useToast();
   const [data, setData] = useState<contactDataType>({
-    fullName: "",
+    name: "",
     email: "",
     subject: "",
     message: "",
@@ -28,9 +30,9 @@ function ContactForm() {
     setData({ ...data, [e.target.name]: e.target.value });
   }
 
-  function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (data.fullName == "") {
+    if (data.name == "") {
       showErrorMessage("Name is required.");
       return;
     }
@@ -38,6 +40,22 @@ function ContactForm() {
       showErrorMessage("Email is required.");
       return;
     }
+    const msg: ContactMessage = {
+      id: 0,
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+      createdDate: new Date(),
+    };
+
+    await Save(msg);
+
+    toast({
+      variant: "success",
+      description: "Message has been sent successfully.",
+    });
+
     console.log(data);
   }
 
@@ -61,17 +79,17 @@ function ContactForm() {
           </p>
 
           <FormInput
-            inputLabel="Full Name"
+            inputLabel="Full Name*"
             labelFor="name"
             inputType="text"
             inputId="name"
-            inputName="fullName"
+            inputName="name"
             placeholderText="Your Name"
             ariaLabelName="Name"
             onchange={updateState}
           />
           <FormInput
-            inputLabel="Email"
+            inputLabel="Email*"
             labelFor="email"
             inputType="email"
             inputId="email"

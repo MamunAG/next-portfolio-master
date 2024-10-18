@@ -7,6 +7,8 @@ import { FaBlog } from "react-icons/fa";
 import { IoPricetags } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { TiHome } from "react-icons/ti";
+import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+import { FaMessage } from "react-icons/fa6";
 
 function AdminSidebar() {
   return (
@@ -34,6 +36,19 @@ function AdminSidebar() {
               className="flex items-center p-2 border-b hover:bg-slate-200 rounded"
             >
               <IoPricetags className="mr-3 size-4" /> Tag
+            </Link>
+            <Link
+              href="/admin/hire-me"
+              className="flex items-center p-2 border-b hover:bg-slate-200 rounded"
+            >
+              <VscGitPullRequestGoToChanges className="mr-3 size-4" /> Hire-me
+              Request
+            </Link>
+            <Link
+              href="/admin/message"
+              className="flex items-center p-2 border-b hover:bg-slate-200 rounded"
+            >
+              <FaMessage className="mr-3 size-4" /> Message
             </Link>
           </div>
         </div>
