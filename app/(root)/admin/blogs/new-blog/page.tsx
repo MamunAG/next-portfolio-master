@@ -132,7 +132,7 @@ function AddNewBlog() {
       BlogDetails: sections,
     };
     axios
-      .post("http://localhost:3000/api/blogs", formattedData)
+      .post("/api/blogs", formattedData)
       .then((res) => {
         console.log(res);
         setSections([]);

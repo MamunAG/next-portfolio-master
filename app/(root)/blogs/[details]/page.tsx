@@ -1,3 +1,6 @@
+"use client";
+import { GetAllBlogById } from "@/actions/blog-actions";
+import { BlogDetails, BlogMaster, BlogTags } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 
@@ -18,92 +21,35 @@ function TextSection({ text }: { text: string }) {
 }
 
 export default function Details({ params }: { params: { details: number } }) {
+  const [blog, setBlog] = React.useState<
+    | ({
+        BlogDetails: BlogDetails[];
+        BlogTags: BlogTags[];
+      } & BlogMaster)
+    | null
+  >();
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const data = await GetAllBlogById(params.details);
+      setBlog(data);
+    };
+    getData();
+  }, [params.details]);
+
+  console.log(blog);
   return (
     <div className="container flex flex-col justify-center">
-      <div className="border-b-2 mb-3">
-        <h1 className="font-bold text-2xl">This is the title</h1>
+      <div className="border-b-2 mb-3 pb-2">
+        <h1 className="font-bold text-2xl">{blog?.title}</h1>
       </div>
-      <ImageSection src={"/images/vat.jpg"} />
-      <TextSection
-        text={`
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium,
-          incidunt nulla nam illo eum id odit corrupti suscipit placeat? Ratione
-          quibusdam provident voluptate quod id quasi autem, unde expedita
-          veniam.Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Praesentium, incidunt nulla nam illo eum id odit corrupti suscipit
-          placeat? Ratione quibusdam provident voluptate quod id quasi autem,
-          unde expedita veniam.Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Praesentium, incidunt nulla nam illo eum id odit
-          corrupti suscipit placeat? Ratione quibusdam provident voluptate quod
-          id quasi autem, unde expedita veniam.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Praesentium, incidunt nulla nam illo eum
-          id odit corrupti suscipit placeat? Ratione quibusdam provident
-          voluptate quod id quasi autem, unde expedita veniam.Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Praesentium, incidunt nulla nam
-          illo eum id odit corrupti suscipit placeat? Ratione quibusdam
-          provident voluptate quod id quasi autem, unde expedita veniam.
-          `}
-      />
-      <TextSection
-        text={`
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium,
-          incidunt nulla nam illo eum id odit corrupti suscipit placeat? Ratione
-          quibusdam provident voluptate quod id quasi autem, unde expedita
-          veniam.Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Praesentium, incidunt nulla nam illo eum id odit corrupti suscipit
-          placeat? Ratione quibusdam provident voluptate quod id quasi autem,
-          unde expedita veniam.Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Praesentium, incidunt nulla nam illo eum id odit
-          corrupti suscipit placeat? Ratione quibusdam provident voluptate quod
-          id quasi autem, unde expedita veniam.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Praesentium, incidunt nulla nam illo eum
-          id odit corrupti suscipit placeat? Ratione quibusdam provident
-          voluptate quod id quasi autem, unde expedita veniam.Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Praesentium, incidunt nulla nam
-          illo eum id odit corrupti suscipit placeat? Ratione quibusdam
-          provident voluptate quod id quasi autem, unde expedita veniam.
-          `}
-      />
-      <TextSection
-        text={`
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium,
-          incidunt nulla nam illo eum id odit corrupti suscipit placeat? Ratione
-          quibusdam provident voluptate quod id quasi autem, unde expedita
-          veniam.Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Praesentium, incidunt nulla nam illo eum id odit corrupti suscipit
-          placeat? Ratione quibusdam provident voluptate quod id quasi autem,
-          unde expedita veniam.Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Praesentium, incidunt nulla nam illo eum id odit
-          corrupti suscipit placeat? Ratione quibusdam provident voluptate quod
-          id quasi autem, unde expedita veniam.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Praesentium, incidunt nulla nam illo eum
-          id odit corrupti suscipit placeat? Ratione quibusdam provident
-          voluptate quod id quasi autem, unde expedita veniam.Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Praesentium, incidunt nulla nam
-          illo eum id odit corrupti suscipit placeat? Ratione quibusdam
-          provident voluptate quod id quasi autem, unde expedita veniam.
-          `}
-      />
-      <TextSection
-        text={`
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium,
-          incidunt nulla nam illo eum id odit corrupti suscipit placeat? Ratione
-          quibusdam provident voluptate quod id quasi autem, unde expedita
-          veniam.Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Praesentium, incidunt nulla nam illo eum id odit corrupti suscipit
-          placeat? Ratione quibusdam provident voluptate quod id quasi autem,
-          unde expedita veniam.Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Praesentium, incidunt nulla nam illo eum id odit
-          corrupti suscipit placeat? Ratione quibusdam provident voluptate quod
-          id quasi autem, unde expedita veniam.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Praesentium, incidunt nulla nam illo eum
-          id odit corrupti suscipit placeat? Ratione quibusdam provident
-          voluptate quod id quasi autem, unde expedita veniam.Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Praesentium, incidunt nulla nam
-          illo eum id odit corrupti suscipit placeat? Ratione quibusdam
-          provident voluptate quod id quasi autem, unde expedita veniam.
-          `}
-      />
+      {blog?.BlogDetails?.map((element) =>
+        element.sectionType === "image" ? (
+          <ImageSection src={element.imagePreview!} key={Math.random()} />
+        ) : (
+          <TextSection text={element.text!} key={Math.random()} />
+        )
+      )}
     </div>
   );
 }

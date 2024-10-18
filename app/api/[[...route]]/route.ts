@@ -6,6 +6,7 @@ import authors from "@/app/api/authors/authors";
 import user from "@/app/api/users/user";
 import tag from "../tag/tag";
 import blogs from "../blogs/blogs";
+import { cors } from "hono/cors";
 
 // export const config: PageConfig = {
 //   api: {
