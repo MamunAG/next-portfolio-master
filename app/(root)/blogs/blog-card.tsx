@@ -3,10 +3,15 @@
 import React from "react";
 import Image from "next/image";
 import { CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function BlogCard() {
+  const route = useRouter();
   return (
-    <div className="border rounded-lg shadow w-full p-5 mb-10 hover:cursor-pointer hover:border-slate-400 hover:shadow-lg transition">
+    <div
+      className="border rounded-lg shadow w-full p-5 mb-10 hover:cursor-pointer hover:border-slate-400 hover:shadow-lg transition"
+      onClick={() => route.push("/blogs/100")}
+    >
       <div className="w-full h-full flex flex-row">
         <div>
           <Image

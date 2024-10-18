@@ -9,6 +9,23 @@ import logoLight from "../../public/images/logo-light.svg";
 import logoDark from "../../public/images/logo-dark.svg";
 import useThemeSwitcher from "@/hooks/useThemeSwitcher";
 
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "./ui/textarea";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 function AppHeader() {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -23,17 +40,17 @@ function AppHeader() {
   }
 
   function showHireMeModal() {
-    if (!showModal) {
-      document
-        .getElementsByTagName("html")[0]
-        .classList.add("overflow-y-hidden");
-      setShowModal(true);
-    } else {
-      document
-        .getElementsByTagName("html")[0]
-        .classList.remove("overflow-y-hidden");
-      setShowModal(false);
-    }
+    // if (!showModal) {
+    //   document
+    //     .getElementsByTagName("html")[0]
+    //     .classList.add("overflow-y-hidden");
+    //   setShowModal(true);
+    // } else {
+    //   document
+    //     .getElementsByTagName("html")[0]
+    //     .classList.remove("overflow-y-hidden");
+    //   setShowModal(false);
+    // }
   }
   return (
     <motion.nav
@@ -70,7 +87,7 @@ function AppHeader() {
                     K
                   </button>
                   <h1 className="p-0 m-0 ml-1 font-semibold text-lg text-white">
-                    Kokhon
+                    Khokon
                   </h1>
                 </div>
                 // 	src={logoDark}
@@ -157,6 +174,7 @@ function AppHeader() {
           <div className="border-t-2 pt-3 sm:pt-0 sm:border-t-0 border-primary-light dark:border-secondary-dark">
             <button
               onClick={showHireMeModal}
+              role="button"
               className="font-general-medium sm:hidden block text-left text-md bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-sm px-4 py-2 mt-2 duration-300 w-24"
               aria-label="Hire Me Button"
             >
@@ -198,13 +216,14 @@ function AppHeader() {
         {/* Header right section buttons */}
         <div className="hidden sm:flex justify-between items-center flex-col md:flex-row">
           <div className="hidden md:flex">
-            <button
+            {/* <button
               onClick={showHireMeModal}
               className="text-md font-general-medium bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-md px-5 py-2.5 duration-300"
               aria-label="Hire Me Button"
             >
               Hire Me
-            </button>
+            </button> */}
+            <DialogDemo />
           </div>
 
           {/* Theme switcher large screen */}
@@ -228,6 +247,94 @@ function AppHeader() {
         {showModal ? showHireMeModal : null} */}
       </div>
     </motion.nav>
+  );
+}
+export function DialogDemo() {
+  const FormSchema = z.object({
+    name: z.string(),
+    email: z.string().optional(),
+    contactNo: z.string({
+      required_error: "Contact number is required.",
+    }),
+    address: z.string().optional(),
+  });
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data);
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        {/* <Button variant="outline">Edit Profile</Button> */}
+        <Button
+          className="text-md font-general-medium bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-md px-7 py-5 duration-300"
+          aria-label="Hire Me Button"
+        >
+          Hire Me
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Hire Me</DialogTitle>
+          <DialogDescription>
+            Please provide necessary information.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name*
+            </Label>
+            <Input
+              id="name"
+              placeholder="Input your name in here."
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Email
+            </Label>
+            <Input
+              id="username"
+              placeholder="Input your email in here."
+              className="col-span-3"
+              type="email"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Contact*
+            </Label>
+            <Input
+              id="username"
+              placeholder="Input your contact no in here."
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Address
+            </Label>
+            <Textarea
+              id="username"
+              placeholder="Input your address in here."
+              className="col-span-3"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit" className="w-28">
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
