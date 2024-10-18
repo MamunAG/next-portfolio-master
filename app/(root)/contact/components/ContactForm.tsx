@@ -2,15 +2,58 @@
 
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/ui/formInput";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+
+type contactDataType = {
+  fullName: string;
+  email: string;
+  subject: string;
+  message: string;
+};
 
 function ContactForm() {
+  const { toast } = useToast();
+  const [data, setData] = useState<contactDataType>({
+    fullName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  function updateState(e: React.ChangeEvent<HTMLInputElement>) {
+    setData({ ...data, [e.target.name]: e.target.value });
+  }
+  function updateState_txtArea(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setData({ ...data, [e.target.name]: e.target.value });
+  }
+
+  function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (data.fullName == "") {
+      showErrorMessage("Name is required.");
+      return;
+    }
+    if (data.email == "") {
+      showErrorMessage("Email is required.");
+      return;
+    }
+    console.log(data);
+  }
+
+  function showErrorMessage(msg: string) {
+    toast({
+      variant: "destructive",
+      title: "Message",
+      description: msg,
+    });
+  }
+
   return (
     <div className="w-full lg:w-1/2">
       <div className="leading-loose">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
+          onSubmit={handleOnSubmit}
           className="max-w-xl m-4 p-6 sm:p-10 bg-secondary-light dark:bg-secondary-dark rounded-xl shadow-xl text-left"
         >
           <p className="font-general-medium text-primary-dark dark:text-primary-light text-2xl mb-8">
@@ -22,9 +65,10 @@ function ContactForm() {
             labelFor="name"
             inputType="text"
             inputId="name"
-            inputName="name"
+            inputName="fullName"
             placeholderText="Your Name"
             ariaLabelName="Name"
+            onchange={updateState}
           />
           <FormInput
             inputLabel="Email"
@@ -34,6 +78,7 @@ function ContactForm() {
             inputName="email"
             placeholderText="Your email"
             ariaLabelName="Email"
+            onchange={updateState}
           />
           <FormInput
             inputLabel="Subject"
@@ -43,6 +88,7 @@ function ContactForm() {
             inputName="subject"
             placeholderText="Subject"
             ariaLabelName="Subject"
+            onchange={updateState}
           />
 
           <div className="mt-6">
@@ -59,6 +105,7 @@ function ContactForm() {
               cols={14}
               rows={6}
               aria-label="Message"
+              onChange={updateState_txtArea}
             ></textarea>
           </div>
 

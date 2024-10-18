@@ -25,6 +25,15 @@ import { Textarea } from "./ui/textarea";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 function AppHeader() {
   const [showMenu, setShowMenu] = useState(false);
@@ -270,7 +279,6 @@ export function DialogDemo() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {/* <Button variant="outline">Edit Profile</Button> */}
         <Button
           className="text-md font-general-medium bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm rounded-md px-7 py-5 duration-300"
           aria-label="Hire Me Button"
@@ -279,60 +287,109 @@ export function DialogDemo() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Hire Me</DialogTitle>
-          <DialogDescription>
-            Please provide necessary information.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name*
-            </Label>
-            <Input
-              id="name"
-              placeholder="Input your name in here."
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Email
-            </Label>
-            <Input
-              id="username"
-              placeholder="Input your email in here."
-              className="col-span-3"
-              type="email"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Contact*
-            </Label>
-            <Input
-              id="username"
-              placeholder="Input your contact no in here."
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Address
-            </Label>
-            <Textarea
-              id="username"
-              placeholder="Input your address in here."
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit" className="w-28">
-            Save
-          </Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <DialogHeader>
+              <DialogTitle>Hire Me</DialogTitle>
+              <DialogDescription>
+                Please provide necessary information.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel className="text-right">Name*</FormLabel>
+                      <FormControl className="col-span-3">
+                        <Input
+                          placeholder="Input your name in here."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel className="text-right">Email</FormLabel>
+                      <FormControl className="col-span-3">
+                        <Input
+                          placeholder="Input your email in here."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="contactNo"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel className="text-right">Contact</FormLabel>
+                      <FormControl className="col-span-3">
+                        <Input
+                          placeholder="Input your contact no in here."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel className="text-right">Address</FormLabel>
+                      <FormControl className="col-span-3">
+                        <Textarea
+                          placeholder="Input your address in here."
+                          className="resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Address
+                </Label>
+                <Textarea
+                  id="username"
+                  placeholder="Input your address in here."
+                  className="col-span-3"
+                />
+              </div> */}
+            </div>
+            <DialogFooter>
+              <Button type="submit" className="w-28">
+                Save
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

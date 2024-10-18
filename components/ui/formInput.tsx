@@ -1,3 +1,5 @@
+import React from "react";
+
 interface IFormImput {
   inputLabel: string;
   labelFor: string;
@@ -6,6 +8,7 @@ interface IFormImput {
   inputName: string;
   placeholderText: string;
   ariaLabelName: string;
+  onchange: React.ChangeEventHandler<HTMLInputElement>;
 }
 const FormInput = ({
   inputLabel,
@@ -15,6 +18,7 @@ const FormInput = ({
   inputName,
   placeholderText,
   ariaLabelName,
+  onchange,
 }: IFormImput) => {
   return (
     <div className="font-general-regular mb-4">
@@ -31,7 +35,7 @@ const FormInput = ({
         name={inputName}
         placeholder={placeholderText}
         aria-label={ariaLabelName}
-        required
+        onChange={onchange}
       />
     </div>
   );
