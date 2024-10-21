@@ -47,6 +47,7 @@ model BlogDetails {
   sectionType  String
   imagePreview String?
   text         String?
+  sortingNo    Int         @default(0)
 }
 
 model BlogTags {

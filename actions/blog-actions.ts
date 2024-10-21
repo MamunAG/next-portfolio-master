@@ -14,7 +14,7 @@ export async function GetAllBlogById(id: number) {
   const blog = await prismadb.blogMaster.findFirst({
     include: {
       BlogDetails: {
-        orderBy: { id: "asc" },
+        orderBy: { sortingNo: "asc" },
       },
       BlogTags: true,
     },
@@ -71,8 +71,22 @@ export async function Save({
     throw new Error("This title already exist.");
   }
 
+  //check unique title
+  const preBlog = await prismadb.blogMaster.findFirst({
+    where: {
+      title: blogMaster.title,
+    },
+  });
+  if (preBlog)
+    throw new Error("This blog title already exist. Please try new one.");
+  //end-check unique title
+
   const blog = await prismadb.blogMaster.create({
-    data: blogMaster,
+    data: {
+      title: blogMaster.title,
+      isPublished: blogMaster.isPublished,
+      composedDate: blogMaster.composedDate,
+    },
   });
 
   blogDetails?.forEach(async (element: BlogDetails) => {
@@ -82,6 +96,7 @@ export async function Save({
         sectionType: element.sectionType,
         imagePreview: element.imagePreview,
         text: element.text,
+        sortingNo: element.sortingNo,
       },
     });
   });

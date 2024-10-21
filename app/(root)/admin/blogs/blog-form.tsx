@@ -1,38 +1,51 @@
 "use client";
 
-import React from "react";
-import { FaAngleRight } from "react-icons/fa";
-import { FiFileText, FiImage } from "react-icons/fi";
-import Link from "next/link";
-import { Tag } from "@prisma/client";
-import { v4 as uid } from "uuid";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import TextSection from "./components/client/text-section";
-import ImageSection from "./components/client/image-section";
-import AppSheet from "@/components/app-sheet";
-import { AppCombobox } from "@/components/app-combobox";
+import React from "react";
+import ImageSection from "./components/image-section";
+import TextSection from "./components/text-section";
+import { FiFileText, FiImage } from "react-icons/fi";
 import MultipleSelector from "@/components/MultipleSelectorRef";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { FaAngleRight } from "react-icons/fa";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { Save } from "@/actions/blog-actions";
+import { v4 as uid } from "uuid";
+import { BlogDetails, BlogMaster, BlogTags, Tag } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ReactQueryKey } from "@/utility/react-query-key";
+import axios from "axios";
 
-function AddNewBlog() {
+type TagOption = {
+  label: string;
+  value: string;
+};
+
+export default function BlogForm({
+  data,
+  pageAction,
+}: {
+  data: Tag | undefined;
+  pageAction: string;
+}) {
+  const router = useRouter();
+  const { toast } = useToast();
   interface ISection {
     id: string;
     sectionType: string;
     imagePreview?: string | ArrayBuffer | null;
     text?: string;
   }
+
   const [title, setTitle] = React.useState<string>();
   const [tags, setTags] = React.useState<TagOption[]>([]);
   const [TAG_OPTIONS, setTAG_OPTIONS] = React.useState<TagOption[]>([]);
   const [sections, setSections] = React.useState<ISection[]>([]);
+  const [isProgress, setIsProgress] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  // console.log(sections);
 
   const {
     data: tagsData,
@@ -57,7 +70,6 @@ function AddNewBlog() {
     setIsLoading(false);
   }, [tagsData]);
 
-  console.log("lstT: ", TAG_OPTIONS);
   const addNewSection = (type: string) => {
     if (type == "text") {
       const newSection = {
@@ -121,28 +133,61 @@ function AddNewBlog() {
     }
   };
 
-  function handleSubmit() {
-    // console.log("title: ", title);
-    // console.log("tags: ", tags);
-    // console.log(sections);
+  async function handleSubmit() {
+    try {
+      setIsProgress(true);
 
-    const formattedData = {
-      title,
-      BlogTags: tags,
-      BlogDetails: sections,
-    };
-    axios
-      .post("/api/blogs", formattedData)
-      .then((res) => {
-        console.log(res);
-        setSections([]);
-      })
-      .catch((error) => console.log(error));
+      const blogMasterData: BlogMaster = {
+        id: 0,
+        title: title!,
+        isPublished: true,
+        composedById: 0,
+        composedDate: new Date(),
+      };
+
+      const blogDetailsData: BlogDetails[] = sections.map((element, index) => {
+        const dtls: BlogDetails = {
+          id: 0,
+          masterId: 0,
+          sectionType: element.sectionType,
+          imagePreview: element.imagePreview?.toString()!,
+          text: element.text!,
+          sortingNo: index,
+        };
+        return dtls;
+      });
+
+      const blogTagsData: BlogTags[] = tags.map((element) => {
+        const t: BlogTags = {
+          id: 0,
+          blogId: 0,
+          tagId: Number(element.value),
+        };
+        return t;
+      });
+
+      console.log("master: ", blogMasterData);
+      console.log("details: ", blogDetailsData);
+      console.log("tags: ", blogTagsData);
+
+      await Save({
+        blogMaster: blogMasterData,
+        blogDetails: blogDetailsData,
+        blogTags: blogTagsData,
+      });
+
+      router.push("/admin/blogs");
+    } catch (error) {
+      setIsProgress(false);
+      console.log("Error: ", error);
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          description: error.message,
+        });
+      }
+    }
   }
-  type TagOption = {
-    label: string;
-    value: string;
-  };
 
   if (isLoading) {
     return (
@@ -151,9 +196,9 @@ function AddNewBlog() {
       </p>
     );
   }
+
   return (
-    <div>
-      <AppSheet />
+    <>
       <div className="flex items-center justify-between border-b pb-2">
         <div className="flex items-center">
           <Link
@@ -260,14 +305,12 @@ function AddNewBlog() {
         <Button
           variant="default"
           onClick={handleSubmit}
-          disabled={sections.length > 0 ? false : true}
+          disabled={sections.length > 0 ? isProgress : true}
           className="w-52"
         >
           Save
         </Button>
       </div>
-    </div>
+    </>
   );
 }
-
-export default AddNewBlog;
