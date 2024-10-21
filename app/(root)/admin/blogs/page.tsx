@@ -10,6 +10,7 @@ import { BlogTable } from "@/app/(root)/admin/blogs/blog-table";
 import { ReactQueryKey } from "@/utility/react-query-key";
 import TableSkeleton from "@/utility/table-skeleton";
 import { useToast } from "@/components/ui/use-toast";
+import { PageAction } from "@/utility/page-actions";
 
 function Blogs() {
   const { toast } = useToast();
@@ -37,7 +38,7 @@ function Blogs() {
       <div className="flex items-center justify-between border-b pb-2">
         <div className="font-bold text-2xl">Blogs</div>
         <div>
-          <Link href="blogs/new-blog">
+          <Link href={`blogs/${PageAction.add}`}>
             <Button>Add New Blog</Button>
           </Link>
         </div>
