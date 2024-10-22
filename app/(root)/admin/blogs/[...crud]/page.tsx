@@ -1,25 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { PageAction } from "@/utility/page-actions";
 import { useQuery } from "@tanstack/react-query";
 import { ReactQueryKey } from "@/utility/react-query-key";
-import axios from "axios";
-import { Tag } from "@prisma/client";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import BlogForm from "../blog-form";
+import { GetAllBlogById } from "@/actions/blog-actions";
+import { BlogDetails, BlogMaster, BlogTags } from "@prisma/client";
 
 export default function Crud({ params }: { params: { crud: string[] } }) {
+  const [data, setData] = React.useState<
+    | ({
+        BlogDetails: BlogDetails[];
+        BlogTags: ({
+          tag: {
+            name: string;
+            id: number;
+            isActive: boolean;
+          } | null;
+        } & {
+          id: number;
+          blogId: number;
+          tagId: number;
+        })[];
+      } & BlogMaster)
+    | null
+  >();
+
   console.log(params);
   const pageAction = params.crud[0];
-  const tagId = params.crud[1];
+  const blogId = params.crud[1];
 
-  const { data: tag } = useQuery({
-    queryKey: [ReactQueryKey.tags, tagId],
-    queryFn: async (): Promise<Tag> =>
-      await axios.get(`/api/tag/${tagId}`).then((res) => res.data),
-  });
+  useEffect(() => {
+    const getData = async () => await GetAllBlogById(Number(blogId));
+    getData().then((res) => setData(res));
+  }, [blogId]);
 
   if (!pageAction) {
     return (
@@ -31,8 +48,8 @@ export default function Crud({ params }: { params: { crud: string[] } }) {
     );
   }
 
-  if (tagId && Number(tagId) > 0) {
-    if (!tag) {
+  if (blogId && Number(blogId) > 0) {
+    if (!data) {
       return (
         <h1>
           <em>Loading...</em>
@@ -44,25 +61,25 @@ export default function Crud({ params }: { params: { crud: string[] } }) {
   if (pageAction === PageAction.view) {
     return (
       <div className="">
-        <BlogForm data={tag} pageAction={PageAction.view} />
+        <BlogForm data={data!} pageAction={PageAction.view} />
       </div>
     );
   } else if (pageAction === PageAction.add) {
     return (
       <div className="">
-        <BlogForm data={tag} pageAction={PageAction.add} />
+        <BlogForm data={null} pageAction={PageAction.add} />
       </div>
     );
   } else if (pageAction === PageAction.edit) {
     return (
       <div>
-        <BlogForm data={tag} pageAction={PageAction.edit} />
+        <BlogForm data={data!} pageAction={PageAction.edit} />
       </div>
     );
   } else if (pageAction === PageAction.delete) {
     return (
       <div>
-        <BlogForm data={tag} pageAction={PageAction.delete} />
+        <BlogForm data={data!} pageAction={PageAction.delete} />
       </div>
     );
   } else {

@@ -19,7 +19,7 @@ function TextSection({
   onMoveUp: MouseEventHandler;
   onMoveDown: MouseEventHandler;
   onInputChange: Function;
-  section: { id: string; sectionType: string };
+  section: { id: string; sectionType: string; text?: string };
 }) {
   return (
     <div className="p-2 mt-3 bg-gray-100 rounded shadow-sm border">
@@ -53,6 +53,7 @@ function TextSection({
           className="bg-white shadow-none"
           placeholder="Write here.."
           name="content"
+          value={section.text}
         ></Textarea>
       </div>
     </div>

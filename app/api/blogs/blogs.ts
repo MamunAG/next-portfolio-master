@@ -49,180 +49,180 @@ app.get("/:id", async (c) => {
   return c.json(blog);
 });
 
-app.post("/", async (c) => {
-  const {
-    id,
-    title,
-    composedById,
-    composedDate,
-    isPublished,
-    BlogDetails,
-    BlogTags,
-  } = await c.req.json();
+// app.post("/", async (c) => {
+//   const {
+//     id,
+//     title,
+//     composedById,
+//     composedDate,
+//     isPublished,
+//     BlogDetails,
+//     BlogTags,
+//   } = await c.req.json();
 
-  if (!title) {
-    throw new HTTPException(400, { message: "Title is required" });
-  }
-  if (!BlogDetails) {
-    throw new HTTPException(400, { message: "Details is required" });
-  }
+//   if (!title) {
+//     throw new HTTPException(400, { message: "Title is required" });
+//   }
+//   if (!BlogDetails) {
+//     throw new HTTPException(400, { message: "Details is required" });
+//   }
 
-  const blog = await prismadb.blogMaster.create({
-    data: {
-      title,
-      composedById,
-      composedDate,
-      isPublished,
-    },
-  });
+//   const blog = await prismadb.blogMaster.create({
+//     data: {
+//       title,
+//       composedById,
+//       composedDate,
+//       isPublished,
+//     },
+//   });
 
-  BlogDetails?.forEach(async (element: BlogDetails) => {
-    await prismadb.blogDetails.create({
-      data: {
-        masterId: blog.id,
-        sectionType: element.sectionType,
-        imagePreview: element.imagePreview,
-        text: element.text,
-      },
-    });
-  });
+//   BlogDetails?.forEach(async (element: BlogDetails) => {
+//     await prismadb.blogDetails.create({
+//       data: {
+//         masterId: blog.id,
+//         sectionType: element.sectionType,
+//         imagePreview: element.imagePreview,
+//         text: element.text,
+//       },
+//     });
+//   });
 
-  BlogTags?.forEach(async (element: BlogTags) => {
-    await prismadb.blogTags.create({
-      data: {
-        blogId: blog.id,
-        tagId: element.tagId,
-      },
-    });
-  });
+//   BlogTags?.forEach(async (element: BlogTags) => {
+//     await prismadb.blogTags.create({
+//       data: {
+//         blogId: blog.id,
+//         tagId: element.tagId,
+//       },
+//     });
+//   });
 
-  const newBlog = await prismadb.blogMaster.findFirst({
-    include: {
-      BlogDetails: true,
-      BlogTags: {
-        include: {
-          tag: true,
-        },
-      },
-    },
-    where: { id: blog.id },
-  });
+//   const newBlog = await prismadb.blogMaster.findFirst({
+//     include: {
+//       BlogDetails: true,
+//       BlogTags: {
+//         include: {
+//           tag: true,
+//         },
+//       },
+//     },
+//     where: { id: blog.id },
+//   });
 
-  return c.json(newBlog);
-});
+//   return c.json(newBlog);
+// });
 
-app.post("/update/:id", async (c) => {
-  const { id: paramId } = await c.req.param();
-  const {
-    id,
-    title,
-    composedById,
-    composedDate,
-    isPublished,
-    BlogDetails,
-    BlogTags,
-  } = await c.req.json();
+// app.post("/update/:id", async (c) => {
+//   const { id: paramId } = await c.req.param();
+//   const {
+//     id,
+//     title,
+//     composedById,
+//     composedDate,
+//     isPublished,
+//     BlogDetails,
+//     BlogTags,
+//   } = await c.req.json();
 
-  if (!title) {
-    throw new HTTPException(400, { message: "Title is required" });
-  }
-  if (!BlogDetails) {
-    throw new HTTPException(400, { message: "Details is required" });
-  }
-  if (Number(paramId) != Number(id)) {
-    throw new HTTPException(400, {
-      message: "Bad request. Request not consistent.",
-    });
-  }
+//   if (!title) {
+//     throw new HTTPException(400, { message: "Title is required" });
+//   }
+//   if (!BlogDetails) {
+//     throw new HTTPException(400, { message: "Details is required" });
+//   }
+//   if (Number(paramId) != Number(id)) {
+//     throw new HTTPException(400, {
+//       message: "Bad request. Request not consistent.",
+//     });
+//   }
 
-  const blog = await prismadb.blogMaster.findFirst({
-    where: { id: Number(paramId) },
-  });
-  if (!blog) {
-    throw new HTTPException(400, {
-      message: "Blog is not found.",
-    });
-  }
-  const updatedBlog = await prismadb.blogMaster.update({
-    data: {
-      title,
-      composedById,
-      composedDate,
-      isPublished,
-    },
-    where: {
-      id: Number(paramId),
-    },
-  });
+//   const blog = await prismadb.blogMaster.findFirst({
+//     where: { id: Number(paramId) },
+//   });
+//   if (!blog) {
+//     throw new HTTPException(400, {
+//       message: "Blog is not found.",
+//     });
+//   }
+//   const updatedBlog = await prismadb.blogMaster.update({
+//     data: {
+//       title,
+//       composedById,
+//       composedDate,
+//       isPublished,
+//     },
+//     where: {
+//       id: Number(paramId),
+//     },
+//   });
 
-  await prismadb.blogDetails.deleteMany({
-    where: {
-      masterId: Number(paramId),
-    },
-  });
+//   await prismadb.blogDetails.deleteMany({
+//     where: {
+//       masterId: Number(paramId),
+//     },
+//   });
 
-  await prismadb.blogTags.deleteMany({
-    where: {
-      blogId: Number(paramId),
-    },
-  });
+//   await prismadb.blogTags.deleteMany({
+//     where: {
+//       blogId: Number(paramId),
+//     },
+//   });
 
-  BlogDetails?.forEach(async (element: BlogDetails) => {
-    await prismadb.blogDetails.create({
-      data: {
-        masterId: blog.id,
-        sectionType: element.sectionType,
-        imagePreview: element.imagePreview,
-        text: element.text,
-      },
-    });
-  });
+//   BlogDetails?.forEach(async (element: BlogDetails) => {
+//     await prismadb.blogDetails.create({
+//       data: {
+//         masterId: blog.id,
+//         sectionType: element.sectionType,
+//         imagePreview: element.imagePreview,
+//         text: element.text,
+//       },
+//     });
+//   });
 
-  BlogTags?.forEach(async (element: BlogTags) => {
-    await prismadb.blogTags.create({
-      data: {
-        blogId: blog.id,
-        tagId: element.tagId,
-      },
-    });
-  });
+//   BlogTags?.forEach(async (element: BlogTags) => {
+//     await prismadb.blogTags.create({
+//       data: {
+//         blogId: blog.id,
+//         tagId: element.tagId,
+//       },
+//     });
+//   });
 
-  return c.json(updatedBlog);
-});
+//   return c.json(updatedBlog);
+// });
 
-app.post("/delete/:id", async (c) => {
-  const { id: paramId } = await c.req.param();
-  if (Number(paramId) <= 0) {
-    throw new HTTPException(400, {
-      message: "Bad request. Blog not selected.",
-    });
-  }
-  const store = await prismadb.blogMaster.findFirst({
-    where: { id: Number(paramId) },
-  });
-  if (!store) {
-    return c.notFound();
-  }
+// app.post("/delete/:id", async (c) => {
+//   const { id: paramId } = await c.req.param();
+//   if (Number(paramId) <= 0) {
+//     throw new HTTPException(400, {
+//       message: "Bad request. Blog not selected.",
+//     });
+//   }
+//   const store = await prismadb.blogMaster.findFirst({
+//     where: { id: Number(paramId) },
+//   });
+//   if (!store) {
+//     return c.notFound();
+//   }
 
-  await prismadb.blogDetails.deleteMany({
-    where: {
-      masterId: Number(paramId),
-    },
-  });
+//   await prismadb.blogDetails.deleteMany({
+//     where: {
+//       masterId: Number(paramId),
+//     },
+//   });
 
-  await prismadb.blogTags.deleteMany({
-    where: {
-      blogId: Number(paramId),
-    },
-  });
+//   await prismadb.blogTags.deleteMany({
+//     where: {
+//       blogId: Number(paramId),
+//     },
+//   });
 
-  await prismadb.blogMaster.delete({
-    where: {
-      id: Number(paramId),
-    },
-  });
+//   await prismadb.blogMaster.delete({
+//     where: {
+//       id: Number(paramId),
+//     },
+//   });
 
-  return c.text("Blog deleted successfully.");
-});
+//   return c.text("Blog deleted successfully.");
+// });
 
 export default app;

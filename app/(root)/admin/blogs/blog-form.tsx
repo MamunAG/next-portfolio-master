@@ -12,12 +12,14 @@ import { FaAngleRight } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { Save } from "@/actions/blog-actions";
+import { Delete, Save, Update } from "@/actions/blog-actions";
 import { v4 as uid } from "uuid";
 import { BlogDetails, BlogMaster, BlogTags, Tag } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { ReactQueryKey } from "@/utility/react-query-key";
 import axios from "axios";
+import { PageAction } from "@/utility/page-actions";
+import { cn } from "@/lib/utils";
 
 type TagOption = {
   label: string;
@@ -28,7 +30,22 @@ export default function BlogForm({
   data,
   pageAction,
 }: {
-  data: Tag | undefined;
+  data:
+    | ({
+        BlogDetails: BlogDetails[];
+        BlogTags: ({
+          tag: {
+            name: string;
+            id: number;
+            isActive: boolean;
+          } | null;
+        } & {
+          id: number;
+          blogId: number;
+          tagId: number;
+        })[];
+      } & BlogMaster)
+    | null;
   pageAction: string;
 }) {
   const router = useRouter();
@@ -70,6 +87,37 @@ export default function BlogForm({
     setIsLoading(false);
   }, [tagsData]);
 
+  React.useEffect(() => {
+    //title
+    setTitle(data?.title);
+
+    //tags
+    const tgs: TagOption[] = [];
+    data?.BlogTags.forEach((element) => {
+      tgs.push({
+        label: element?.tag?.name!,
+        value: element?.tagId.toString(),
+      });
+    });
+    if (tgs) {
+      setTags([...tgs]);
+    }
+    //end-tags
+
+    //section
+    const secs: ISection[] = [];
+    data?.BlogDetails?.forEach((element) => {
+      secs.push({
+        id: element.id.toString(),
+        sectionType: element.sectionType,
+        imagePreview: element.imagePreview,
+        text: element.text!,
+      });
+    });
+    setSections([...secs]);
+    //end-section
+  }, [data]);
+
   const addNewSection = (type: string) => {
     if (type == "text") {
       const newSection = {
@@ -97,7 +145,7 @@ export default function BlogForm({
     const newSections = [...sections];
     const [movedSection] = newSections.splice(index, 1);
     newSections.splice(index + direction, 0, movedSection);
-    setSections(newSections);
+    setSections([...newSections]);
   };
 
   const handleInputChange = (
@@ -133,12 +181,13 @@ export default function BlogForm({
     }
   };
 
-  async function handleSubmit() {
+  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
     try {
       setIsProgress(true);
 
       const blogMasterData: BlogMaster = {
-        id: 0,
+        id: data?.id!,
         title: title!,
         isPublished: true,
         composedById: 0,
@@ -170,11 +219,33 @@ export default function BlogForm({
       console.log("details: ", blogDetailsData);
       console.log("tags: ", blogTagsData);
 
-      await Save({
-        blogMaster: blogMasterData,
-        blogDetails: blogDetailsData,
-        blogTags: blogTagsData,
-      });
+      if (pageAction === PageAction.add) {
+        await Save({
+          blogMaster: blogMasterData,
+          blogDetails: blogDetailsData,
+          blogTags: blogTagsData,
+        });
+        toast({
+          variant: "success",
+          description: "New blog post added successfully.",
+        });
+      } else if (pageAction === PageAction.edit) {
+        await Update({
+          blogMaster: blogMasterData,
+          blogDetails: blogDetailsData,
+          blogTags: blogTagsData,
+        });
+        toast({
+          variant: "success",
+          description: "Blog post updated successfully.",
+        });
+      } else if (pageAction === PageAction.delete) {
+        await Delete(blogMasterData.id);
+        toast({
+          variant: "success",
+          description: "Blog post deleted successfully.",
+        });
+      }
 
       router.push("/admin/blogs");
     } catch (error) {
@@ -188,6 +259,8 @@ export default function BlogForm({
       }
     }
   }
+
+  console.log("view data:", sections);
 
   if (isLoading) {
     return (
@@ -301,14 +374,52 @@ export default function BlogForm({
           )
         )}
       </div>
-      <div className="text-left mt-10">
+
+      <div className="flex justify-between mt-10">
+        <div className="flex gap-2">
+          <Button
+            disabled={sections.length > 0 ? isProgress : true}
+            className={cn(
+              "w-24",
+              pageAction == PageAction.view ? "hidden" : " "
+            )}
+            variant={
+              pageAction == PageAction.delete ? "destructive" : "default"
+            }
+            onClick={handleSubmit}
+          >
+            {pageAction == PageAction.add
+              ? "Save"
+              : pageAction == PageAction.edit
+              ? "Update"
+              : "Delete"}
+          </Button>
+          <Button
+            type="reset"
+            disabled={sections.length > 0 ? isProgress : true}
+            onClick={() => {
+              setTitle("");
+              setTags([]);
+              setSections([]);
+            }}
+            variant={"destructive"}
+            className={cn(
+              "w-24",
+              pageAction == PageAction.view ? "hidden" : "",
+              pageAction == PageAction.delete ? "hidden" : ""
+            )}
+          >
+            Cancel
+          </Button>
+        </div>
         <Button
-          variant="default"
-          onClick={handleSubmit}
+          type="reset"
           disabled={sections.length > 0 ? isProgress : true}
-          className="w-52"
+          onClick={() => router.push("/admin/blogs")}
+          variant={"outline"}
+          className={cn("w-24")}
         >
-          Save
+          Back
         </Button>
       </div>
     </>

@@ -24,7 +24,17 @@ export default function Details({ params }: { params: { details: number } }) {
   const [blog, setBlog] = React.useState<
     | ({
         BlogDetails: BlogDetails[];
-        BlogTags: BlogTags[];
+        BlogTags: ({
+          tag: {
+            name: string;
+            id: number;
+            isActive: boolean;
+          } | null;
+        } & {
+          id: number;
+          blogId: number;
+          tagId: number;
+        })[];
       } & BlogMaster)
     | null
   >();
