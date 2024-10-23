@@ -186,26 +186,34 @@ export async function Update({
     },
   });
 
-  blogDetails?.forEach(async (element: BlogDetails) => {
-    await prismadb.blogDetails.create({
-      data: {
-        masterId: blogMaster.id,
-        sectionType: element.sectionType,
-        imagePreview: element.imagePreview,
-        text: element.text,
-        sortingNo: element.sortingNo,
-      },
-    });
+  await prismadb.blogDetails.createMany({
+    data: blogDetails,
   });
 
-  blogTags?.forEach(async (element: BlogTags) => {
-    await prismadb.blogTags.create({
-      data: {
-        blogId: blogMaster.id,
-        tagId: element.tagId,
-      },
-    });
+  // blogDetails?.forEach(async (element: BlogDetails) => {
+  //   await prismadb.blogDetails.createMany({
+  //     data: {
+  //       masterId: blogMaster.id,
+  //       sectionType: element.sectionType,
+  //       imagePreview: element.imagePreview,
+  //       text: element.text,
+  //       sortingNo: element.sortingNo,
+  //     },
+  //   });
+  // });
+
+  await prismadb.blogTags.createMany({
+    data: blogTags,
   });
+
+  // blogTags?.forEach(async (element: BlogTags) => {
+  //   await prismadb.blogTags.create({
+  //     data: {
+  //       blogId: blogMaster.id,
+  //       tagId: element.tagId,
+  //     },
+  //   });
+  // });
   return updatedBlog;
 }
 
