@@ -199,7 +199,7 @@ export async function Update({
     },
   });
   blogDetails.forEach((element) => {
-    element.id = 0;
+    delete element.id;
   });
   await prismadb.blogDetails.createMany({
     data: blogDetails,
@@ -217,7 +217,7 @@ export async function Update({
   //   });
   // });
   blogTags.forEach((element) => {
-    element.id = 0;
+    delete element.id;
   });
   await prismadb.blogTags.createMany({
     data: blogTags,
