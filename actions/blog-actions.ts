@@ -198,8 +198,9 @@ export async function Update({
       blogId: Number(blogMaster.id),
     },
   });
-  blogDetails.forEach((element) => {
-    delete element.id;
+  const dtl= blogDetails.map((element) => {
+    element.id=0;
+    return element;
   });
   await prismadb.blogDetails.createMany({
     data: blogDetails,
@@ -217,7 +218,8 @@ export async function Update({
   //   });
   // });
   blogTags.forEach((element) => {
-    delete element.id;
+    element.id=0;
+    return element;
   });
   await prismadb.blogTags.createMany({
     data: blogTags,
