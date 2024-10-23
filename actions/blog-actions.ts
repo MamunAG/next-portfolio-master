@@ -198,13 +198,16 @@ export async function Update({
       blogId: Number(blogMaster.id),
     },
   });
-  const dtl= blogDetails.map((element) => {
-    element.id=0;
-    return element;
+  const dtl= blogDetails.map((element) => ({
+        masterId: blogMaster.id,
+        sectionType: element.sectionType,
+        imagePreview: element.imagePreview,
+        text: element.text,
+        sortingNo: element.sortingNo,
+  }));
+  await prismadb.blogDetails.createMany({
+    data: [...dtl],
   });
-  //await prismadb.blogDetails.createMany({
-    //data: dtl,
-  //});
 
   // blogDetails?.forEach(async (element: BlogDetails) => {
   //   await prismadb.blogDetails.createMany({
