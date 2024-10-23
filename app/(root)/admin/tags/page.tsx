@@ -34,7 +34,7 @@ function Tags() {
   }
 
   return (
-    <div className="container">
+    <div className="">
       <div className="flex items-center justify-between border-b pb-2">
         <div className="font-bold text-2xl">Tags</div>
         <div>
@@ -43,7 +43,7 @@ function Tags() {
           </Link>
         </div>
       </div>
-      <div className="container mt-10">
+      <div className="mt-10">
         {tags ? <TagTable data={tags} /> : <TableSkeleton />}
       </div>
     </div>

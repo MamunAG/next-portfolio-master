@@ -1,18 +1,17 @@
 import AdminHeader from "@/components/admin-header";
-import AdminSidebar from "@/components/admin-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 
 function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <>
-      <AdminHeader></AdminHeader>
-      <div className="flex">
-        <div className="md:w-1/6">
-          <AdminSidebar></AdminSidebar>
-        </div>
-        <div className="md:w-5/6 z-30 px-10 py-5">{children}</div>
-      </div>
-    </>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">
+        <AdminHeader></AdminHeader>
+        <div className="container flex flex-1 flex-col py-3">{children}</div>
+      </main>
+    </SidebarProvider>
   );
 }
 

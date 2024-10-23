@@ -285,70 +285,62 @@ export default function BlogForm({
         </div>
         <div></div>
       </div>
-      <div className="mt-3 border-b pb-2">
-        <div className="flex items-center justify-between">
-          <table className="flex-auto">
-            <tbody>
-              <tr>
-                <th className="p-1 w-6">
-                  <Label>Title</Label>
-                </th>
-                <th className="p-1 w-6">
-                  <Input
-                    name="title"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  ></Input>
-                </th>
-              </tr>
-              <tr>
-                <th className="p-1">
-                  <Label>Tag</Label>
-                </th>
-                <th className="p-1">
-                  <MultipleSelector
-                    value={tags}
-                    onChange={setTags}
-                    options={TAG_OPTIONS}
-                    badgeClassName="bg-slate-100 text-black border hover:bg-slate-200"
-                    placeholder="Select tag..."
-                    emptyIndicator={
-                      <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                        no results found.
-                      </p>
-                    }
-                  />
-                </th>
-              </tr>
-            </tbody>
-          </table>
-          <table>
-            <tbody>
-              <tr>
-                <th className="p-1">
-                  <Button
-                    onClick={() => addNewSection("text")}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <FiFileText className="mr-1"></FiFileText> Add text section
-                  </Button>
-                </th>
-              </tr>
-              <tr>
-                <th className="p-1">
-                  <Button
-                    onClick={() => addNewSection("image")}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <FiImage className="mr-1"></FiImage> Add image section
-                  </Button>
-                </th>
-              </tr>
-            </tbody>
-          </table>
+      <div
+        className="mt-3 bg-slate-50 border-b-2 pb-2 flex flex-wrap items-center justify-between 
+      sticky top-[45px]"
+      >
+        <table className="flex-auto">
+          <tbody>
+            <tr>
+              <th className="p-1 w-6">
+                <Label>Title</Label>
+              </th>
+              <th className="p-1 w-6">
+                <Input
+                  name="title"
+                  placeholder="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                ></Input>
+              </th>
+            </tr>
+            <tr>
+              <th className="p-1">
+                <Label>Tag</Label>
+              </th>
+              <th className="p-1">
+                <MultipleSelector
+                  value={tags}
+                  onChange={setTags}
+                  options={TAG_OPTIONS}
+                  badgeClassName="bg-slate-100 text-black border hover:bg-slate-200"
+                  placeholder="Select tag..."
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      no results found.
+                    </p>
+                  }
+                />
+              </th>
+            </tr>
+          </tbody>
+        </table>
+        <div className="w-full md:w-auto flex flex-col gap-1">
+          <Button
+            onClick={() => addNewSection("text")}
+            variant="outline"
+            className="w-full"
+          >
+            <FiFileText className="mr-1"></FiFileText> Add text section
+          </Button>
+
+          <Button
+            onClick={() => addNewSection("image")}
+            variant="outline"
+            className="w-full"
+          >
+            <FiImage className="mr-1"></FiImage> Add image section
+          </Button>
         </div>
       </div>
       <div>
@@ -414,7 +406,7 @@ export default function BlogForm({
         </div>
         <Button
           type="reset"
-          disabled={sections.length > 0 ? isProgress : true}
+          // disabled={sections.length > 0 ? isProgress : true}
           onClick={() => router.push("/admin/blogs")}
           variant={"outline"}
           className={cn("w-24")}

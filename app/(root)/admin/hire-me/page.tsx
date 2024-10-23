@@ -45,7 +45,7 @@ export default function HireMePage() {
   }
 
   return (
-    <div className="container">
+    <div className="">
       <div className="flex items-center justify-between border-b pb-2">
         <div className="font-bold text-2xl">Hire-me Request</div>
         {/* <div>
@@ -54,7 +54,7 @@ export default function HireMePage() {
           </Link>
         </div> */}
       </div>
-      <div className="container mt-10">
+      <div className="mt-10">
         {isLoading ? <TableSkeleton /> : <HireMeTable data={data!} />}
       </div>
     </div>

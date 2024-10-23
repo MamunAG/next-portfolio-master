@@ -40,7 +40,7 @@ export default function MessagePage() {
   }
 
   return (
-    <div className="container">
+    <div className="">
       <div className="flex items-center justify-between border-b pb-2">
         <div className="font-bold text-2xl">Contact Message</div>
         {/* <div>
@@ -49,7 +49,7 @@ export default function MessagePage() {
           </Link>
         </div> */}
       </div>
-      <div className="container mt-10">
+      <div className=" mt-10">
         {isLoading ? <TableSkeleton /> : <ContactMessageTable data={data!} />}
       </div>
     </div>
