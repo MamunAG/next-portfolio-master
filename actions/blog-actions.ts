@@ -218,7 +218,7 @@ export async function Update({
   //   });
   // });
   const dtlblog=blogTags.map((element) => ( {
-    blogId: element.blogId,
+    blogId: blogMaster.id,
     tagId: element.tagId
   }));
   await prismadb.blogTags.createMany({
