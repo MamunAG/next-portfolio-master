@@ -189,7 +189,7 @@ export async function Update({
   blogDetails?.forEach(async (element: BlogDetails) => {
     await prismadb.blogDetails.create({
       data: {
-        masterId: blog.id,
+        masterId: blogMaster.id,
         sectionType: element.sectionType,
         imagePreview: element.imagePreview,
         text: element.text,
@@ -201,7 +201,7 @@ export async function Update({
   blogTags?.forEach(async (element: BlogTags) => {
     await prismadb.blogTags.create({
       data: {
-        blogId: blog.id,
+        blogId: blogMaster.id,
         tagId: element.tagId,
       },
     });
