@@ -203,7 +203,7 @@ export async function Update({
     return element;
   });
   await prismadb.blogDetails.createMany({
-    data: blogDetails,
+    data: dtl,
   });
 
   // blogDetails?.forEach(async (element: BlogDetails) => {
@@ -217,12 +217,12 @@ export async function Update({
   //     },
   //   });
   // });
-  blogTags.forEach((element) => {
+  const dtlblog=blogTags.map((element) => {
     element.id=0;
     return element;
   });
   await prismadb.blogTags.createMany({
-    data: blogTags,
+    data: dtlblog,
   });
 
   // blogTags?.forEach(async (element: BlogTags) => {
