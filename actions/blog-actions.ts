@@ -217,10 +217,10 @@ export async function Update({
   //     },
   //   });
   // });
-  const dtlblog=blogTags.map((element) => return {
+  const dtlblog=blogTags.map((element) => ( {
     blogId: element.blogId,
     tagId: element.tagId
-  });
+  }));
   await prismadb.blogTags.createMany({
     data: [...dtlblog],
   });
