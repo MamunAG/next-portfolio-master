@@ -162,6 +162,19 @@ export async function Update({
     throw new Error("Blog is not found.");
   }
 
+  type BlogDetailsDto = {
+    masterId: number;
+    sectionType: string;
+    imagePreview: string;
+    text: string;
+    sortingNo: number;
+  };
+
+  type BlogTagsDto = {
+    blogId: number;
+    tagId: number;
+  };
+
   const updatedBlog = await prismadb.blogMaster.update({
     data: {
       title: blogMaster.title,
@@ -185,7 +198,9 @@ export async function Update({
       blogId: Number(blogMaster.id),
     },
   });
-
+  blogDetails.forEach((element) => {
+    element.id = 0;
+  });
   await prismadb.blogDetails.createMany({
     data: blogDetails,
   });
@@ -201,7 +216,9 @@ export async function Update({
   //     },
   //   });
   // });
-
+  blogTags.forEach((element) => {
+    element.id = 0;
+  });
   await prismadb.blogTags.createMany({
     data: blogTags,
   });
