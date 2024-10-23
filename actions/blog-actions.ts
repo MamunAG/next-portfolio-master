@@ -202,9 +202,9 @@ export async function Update({
     element.id=0;
     return element;
   });
-  await prismadb.blogDetails.createMany({
-    data: dtl,
-  });
+  //await prismadb.blogDetails.createMany({
+    //data: dtl,
+  //});
 
   // blogDetails?.forEach(async (element: BlogDetails) => {
   //   await prismadb.blogDetails.createMany({
@@ -217,12 +217,12 @@ export async function Update({
   //     },
   //   });
   // });
-  const dtlblog=blogTags.map((element) => {
-    element.id=0;
-    return element;
+  const dtlblog=blogTags.map((element) => return {
+    blogId: element.blogId,
+    tagId: element.tagId
   });
   await prismadb.blogTags.createMany({
-    data: dtlblog,
+    data: [...dtlblog],
   });
 
   // blogTags?.forEach(async (element: BlogTags) => {
