@@ -50,7 +50,7 @@ function TextSection({
       <div className="mt-1">
         <Textarea
           onChange={(e) => onInputChange(section.id, e)}
-          className="bg-white shadow-none resize-none "
+          className="bg-white shadow-none resize-none h-auto"
           placeholder="Write here.."
           name="content"
           value={section.text}
