@@ -76,7 +76,7 @@ function AppHeader() {
                   >
                     K
                   </button>
-                  <h1 className="p-0 m-0 ml-1 font-semibold text-lg">Kokhon</h1>
+                  <h1 className="p-0 m-0 ml-1 font-semibold text-lg">Khokon</h1>
                 </div>
               ) : (
                 <div className="flex items-center">

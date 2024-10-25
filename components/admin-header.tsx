@@ -1,5 +1,7 @@
 import React from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SignOut } from "./auth/signout-button";
+import UserAvatar from "./auth/UserAvatar";
 
 function AdminHeader() {
   return (
@@ -9,13 +11,9 @@ function AdminHeader() {
     "
     >
       <SidebarTrigger />
-      <div className="w-5/6">
-        <div className="flex align-items-center justify-between">
-          <div></div>
-          <div>
-            <h1 className=" px-16">Admin User</h1>
-          </div>
-        </div>
+      <div className="flex flex-1 justify-end items-center gap-2 px-6">
+        <UserAvatar />
+        <SignOut />
       </div>
     </nav>
   );

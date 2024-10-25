@@ -7,8 +7,13 @@ export default async function UserAvatar() {
   if (!session?.user) return null;
 
   return (
-    <div>
-      <img src={session?.user?.image!} alt="User Avatar" />
+    <div className="flex justify-center items-center">
+      <img
+        src={session?.user?.image!}
+        alt="User Avatar"
+        width={30}
+        height={30}
+      />
     </div>
   );
 }
