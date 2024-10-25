@@ -162,19 +162,6 @@ export async function Update({
     throw new Error("Blog is not found.");
   }
 
-  type BlogDetailsDto = {
-    masterId: number;
-    sectionType: string;
-    imagePreview: string;
-    text: string;
-    sortingNo: number;
-  };
-
-  type BlogTagsDto = {
-    blogId: number;
-    tagId: number;
-  };
-
   const updatedBlog = await prismadb.blogMaster.update({
     data: {
       title: blogMaster.title,
@@ -198,44 +185,27 @@ export async function Update({
       blogId: Number(blogMaster.id),
     },
   });
-  const dtl= blogDetails.map((element) => ({
-        masterId: blogMaster.id,
-        sectionType: element.sectionType,
-        imagePreview: element.imagePreview,
-        text: element.text,
-        sortingNo: element.sortingNo,
+
+  const dtl = blogDetails.map((element) => ({
+    masterId: blogMaster.id,
+    sectionType: element.sectionType,
+    imagePreview: element.imagePreview,
+    text: element.text,
+    sortingNo: element.sortingNo,
   }));
+
   await prismadb.blogDetails.createMany({
     data: [...dtl],
   });
 
-  // blogDetails?.forEach(async (element: BlogDetails) => {
-  //   await prismadb.blogDetails.createMany({
-  //     data: {
-  //       masterId: blogMaster.id,
-  //       sectionType: element.sectionType,
-  //       imagePreview: element.imagePreview,
-  //       text: element.text,
-  //       sortingNo: element.sortingNo,
-  //     },
-  //   });
-  // });
-  const dtlblog=blogTags.map((element) => ( {
+  const dtlblog = blogTags.map((element) => ({
     blogId: blogMaster.id,
-    tagId: element.tagId
+    tagId: element.tagId,
   }));
   await prismadb.blogTags.createMany({
     data: [...dtlblog],
   });
 
-  // blogTags?.forEach(async (element: BlogTags) => {
-  //   await prismadb.blogTags.create({
-  //     data: {
-  //       blogId: blogMaster.id,
-  //       tagId: element.tagId,
-  //     },
-  //   });
-  // });
   return updatedBlog;
 }
 
