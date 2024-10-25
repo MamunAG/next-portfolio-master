@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { auth } from "../auth";
+import { auth } from "../../auth";
 
 export default async function UserAvatar() {
   const session = await auth();

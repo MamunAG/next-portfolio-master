@@ -190,7 +190,7 @@ export default function BlogForm({
         id: data?.id!,
         title: title!,
         isPublished: true,
-        composedById: 0,
+        composedById: "",
         composedDate: new Date(),
       };
 

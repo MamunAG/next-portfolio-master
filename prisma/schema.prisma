@@ -20,13 +20,15 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  role          String?
+  password      String?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 
   BlogMaster BlogMaster[]
 }

@@ -23,7 +23,7 @@ app.post("/", async (c) => {
 app.get("/:id", async (c) => {
   const { id } = await c.req.param();
   const user = await prismadb.user.findFirst({
-    where: { id: Number(id) },
+    where: { id: id.toString() },
   });
   return c.json(user);
 });
