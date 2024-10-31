@@ -2,7 +2,6 @@ import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -10,13 +9,6 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { SignInServerAction } from "@/components/auth/auth-server-action";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@radix-ui/react-select";
 
 export async function SignIn({ redirectUrl }: { redirectUrl: string }) {
   return (
@@ -62,20 +54,3 @@ export async function SignIn({ redirectUrl }: { redirectUrl: string }) {
     </div>
   );
 }
-
-// <div className="w-full flex justify-center items-center mt-44">
-//         <form
-//           className="w-6/12"
-//           action={SignInServerAction}
-//         >
-//           <Label>
-//             Email
-//             <Input name="email" type="email" />
-//           </Label>
-//           <Label>
-//             Password
-//             <Input name="password" type="password" />
-//           </Label>
-//           <Button className="mt-7">Sign In</Button>
-//         </form>
-//       </div>

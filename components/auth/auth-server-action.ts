@@ -1,9 +1,15 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 export async function SignInServerAction(formData: any) {
-  return await signIn("credentials", formData);
+  try {
+    await signIn("credentials", formData);
+    redirect("/admin");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function SignOutServerAction() {
