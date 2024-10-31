@@ -17,16 +17,16 @@ export async function SignIn() {
   if (session) {
     redirect("/admin");
   }
-  session = await auth();
-  if (session) {
+  const session2 = await auth();
+  if (session2) {
     redirect("/admin");
   }
-  session = await auth();
-  if (session) {
+  const session3 = await auth();
+  if (session3) {
     redirect("/admin");
   }
-  session = await auth();
-  if (session) {
+  const session4 = await auth();
+  if (session4) {
     redirect("/admin");
   }
   
