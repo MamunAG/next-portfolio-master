@@ -17,6 +17,19 @@ export async function SignIn() {
   if (session) {
     redirect("/admin");
   }
+  session = await auth();
+  if (session) {
+    redirect("/admin");
+  }
+  session = await auth();
+  if (session) {
+    redirect("/admin");
+  }
+  session = await auth();
+  if (session) {
+    redirect("/admin");
+  }
+  
   return (
     <div className="flex justify-center items-center min-w-screen min-h-screen">
       <form action={SignInServerAction}>
