@@ -10,47 +10,51 @@ import SamsungImage from "@/public/images/brands/samsung_gray.png";
 import CanonImage from "@/public/images/brands/canon_gray.png";
 import PumaImage from "@/public/images/brands/puma_gray.png";
 
-export const clientsHeading = "Some of the brands I worked with";
+export const clientsHeading = "KKK Law House Services offered";
 
 export const clientsData = [
   {
     id: uuidv4(),
-    title: "Amazon",
-    img: AmazonImage,
+    title: "VAT Consultancy Service",
+    items: [
+      "VAT Return Submission",
+      "VAT Registration, IRC, BIN, ERC & Others Registration",
+      "Mushok 4.3 Prepared & Submission",
+      "Source Tax deduction & Adjustment",
+      "VAT Audit",
+      "VAT Related activities of a company",
+    ],
   },
   {
     id: uuidv4(),
-    title: "Sony",
-    img: SonyImage,
+    title: "Tax Related Service",
+    items: [
+      "Personal Tax Planning, Preparation & Submission",
+      "Corporate Tax Planning",
+      "Tax Assessment, Appeals & Hearing ",
+      "Monthly withholding Return",
+    ],
   },
   {
     id: uuidv4(),
-    title: "Adidas",
-    img: AdidasImage,
+    title: "Accounting Services",
+    items: [
+      "Financial Statement Preparation",
+      "Financial Statement Planning",
+      "Monthly Accounts Service",
+      "Internal Audit Service",
+      "Audited Financial Statement review",
+    ],
   },
   {
     id: uuidv4(),
-    title: "FILA",
-    img: FilaImage,
-  },
-  {
-    id: uuidv4(),
-    title: "NB",
-    img: NBImage,
-  },
-  {
-    id: uuidv4(),
-    title: "SAMSUNG",
-    img: SamsungImage,
-  },
-  {
-    id: uuidv4(),
-    title: "CANON",
-    img: CanonImage,
-  },
-  {
-    id: uuidv4(),
-    title: "PUMA",
-    img: PumaImage,
+    title: "RJSC",
+    items: [
+      "Annual Return",
+      "Change in Structure",
+      "Company Formation",
+      "Share Transfer",
+      "Winding up",
+    ],
   },
 ];

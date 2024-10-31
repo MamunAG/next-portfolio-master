@@ -17,14 +17,134 @@ export default function Page() {
       <AppHeader></AppHeader>
       <AppBanner></AppBanner>
       <div className="container mx-auto">
-        <ProjectsGrid />
-        <div className="mt-10 sm:mt-15 flex justify-center">
+        {/* <ProjectsGrid /> */}
+
+        <section className="py-5 sm:py-10 mt-5 sm:mt-10">
+          <div className="text-center">
+            <p className="font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">
+              সম্মানিত আয়কর প্রদানকারী
+            </p>
+          </div>
+
+          <div className="mt-10 sm:mt-16">
+            <h3
+              className="
+                        font-general-regular 
+                        text-center text-secondary-dark
+                        dark:text-ternary-light
+                        text-md
+                        sm:text-xl
+                        mb-3
+                        "
+            >
+              আস্‌সালামুআলাইকুম।
+            </h3>
+            <h3
+              className="
+                        font-general-regular 
+                        text-center text-secondary-dark
+                        dark:text-ternary-light
+                        text-md
+                        sm:text-xl
+                        mb-3
+                        "
+            >
+              আশা করি আল্লাহর অশেষ রহমতে আপনি ভালো আছেন। একজন দায়িত্বশীল
+              করদাতার জন্য বর্তমান কর বিধিমালা মেনে চলা অত্যন্ত জরুরি। KKK Law
+              House-এ, আমরা আপনাকে সময়মতো আয়কর রিটান প্রদানে সহায়তায় পেশাদার
+              এবং সাশ্রয়ী কর প্রস্তুতি সেবা প্রদান করি।
+            </h3>
+          </div>
+        </section>
+
+        <section className="py-5 sm:py-10 mt-5 sm:mt-10">
+          <div className="text-center">
+            <p className="font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">
+              কেন KKK Law House বেছে নেবেন?
+            </p>
+          </div>
+
+          <div className="mt-10 sm:mt-16">
+            <h3
+              className="
+                        font-general-regular 
+                        text-center text-secondary-dark
+                        dark:text-ternary-light
+                        text-md
+                        sm:text-xl
+                        mb-3
+                        "
+            >
+              সাশ্রয়ী এবং নির্ভুল সেবা: আমাদের অভিজ্ঞ টিম নিশ্চিত করে যে আপনার
+              কর রিটার্নটি দক্ষতার সাথে প্রস্তুত করা হয় এবং সঠিকতা বজায় থাকে।
+            </h3>
+          </div>
+        </section>
+
+        <section className="py-5 sm:py-10 mt-5 sm:mt-10">
+          <div className="text-center">
+            <p className="font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">
+              দাখিল না করার পরিণতি
+            </p>
+          </div>
+
+          <div className="mt-10 sm:mt-16 flex flex-col justify-center items-center">
+            <h3
+              className="
+                font-general-regular 
+                text-center text-secondary-dark
+                dark:text-ternary-light
+                text-md
+                sm:text-xl
+                mb-3
+                "
+            >
+              আপনার কর রিটার্ন দাখিল না করলে গুরুতর শাস্তির মুখোমুখি হতে পারেন,
+              যার মধ্যে রয়েছে:
+            </h3>
+            <ul className="w-fit list-disc">
+              <li>ব্যাংক অ্যাকাউন্ট ফ্রিজ</li>
+              <li>বিদ্যুৎ ও গ্যাস সংযোগ বিচ্ছিন্ন</li>
+              <li>অন্যান্য আইনগত জটিলতা</li>
+              <li>
+                গুরুত্বপূর্ণ সেবায় বিঘ্ন এবং লাইসেন্স নবায়নের অক্ষমতার
+                সম্মুখীন
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="py-5 sm:py-10 mt-5 sm:mt-10">
+          <div className="mt-10 sm:mt-16 flex flex-col justify-center items-center">
+            <h3
+              className="
+                font-general-regular 
+                text-center text-secondary-dark
+                dark:text-ternary-light
+                text-md
+                sm:text-xl
+                mb-3
+                "
+            >
+              <em>
+                আমাদেরকে আপনার কর বিষয়গুলো পরিচালনার সুযোগ দিন, যাতে আপনি আপনার
+                গুরুত্বপূর্ণ বিষয়গুলোর প্রতি মনোযোগ দিতে পারেন।
+                <Link href={"/contact"} className="text-blue-700 underline">
+                  {" "}
+                  যেকোনো জিঞ্জাসায় যোগাযোগের জন্য বিনীত অনুরোধ করা হল।
+                </Link>
+              </em>
+            </h3>
+          </div>
+        </section>
+
+        {/* <div className="mt-10 sm:mt-15 flex justify-center">
           <div className="font-general-medium flex items-center px-6 py-3 rounded-lg shadow-lg hover:shadow-xl bg-indigo-500 hover:bg-indigo-600 focus:ring-1 focus:ring-indigo-900 text-white text-lg sm:text-xl duration-300">
             <Link href="/projects" aria-label="More Projects" passHref>
               More Projects
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
       <AppFooter></AppFooter>
     </main>

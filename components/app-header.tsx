@@ -109,7 +109,7 @@ function AppHeader() {
           </div>
 
           {/* Theme switcher small screen */}
-          <div
+          {/* <div
             onClick={() => setTheme(activeTheme)}
             aria-label="Theme Switcher"
             className="block sm:hidden ml-0 bg-primary-light dark:bg-ternary-dark p-3 shadow-sm rounded-xl cursor-pointer"
@@ -119,7 +119,7 @@ function AppHeader() {
             ) : (
               <FiSun className="text-gray-200 hover:text-gray-50 text-xl" />
             )}
-          </div>
+          </div> */}
 
           {/* Small screen hamburger menu */}
           <div className="sm:hidden">
@@ -153,8 +153,8 @@ function AppHeader() {
           }
         >
           <div className="block text-left text-lg text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2">
-            <Link href="/projects" aria-label="Projects">
-              Projects
+            <Link href="/services" aria-label="Projects">
+              Services
             </Link>
           </div>
           <div className="block text-left text-lg text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2 border-t-2 pt-3 sm:pt-2 sm:border-t-0 border-primary-light dark:border-secondary-dark">
@@ -189,13 +189,13 @@ function AppHeader() {
         <div className="font-general-medium hidden m-0 sm:ml-4 mt-5 sm:mt-3 sm:flex p-5 sm:p-0 justify-center items-center shadow-lg sm:shadow-none">
           <div
             className="block text-left text-lg font-medium text-primary-dark dark:text-ternary-light hover:text-secondary-dark dark:hover:text-secondary-light  sm:mx-4 mb-2 sm:py-2"
-            aria-label="Projects"
+            aria-label="Services"
           >
-            {currentPath.includes("projects") ? (
-              <Link href="/projects">Projects</Link>
+            {currentPath.includes("services") ? (
+              <Link href="/services">Services</Link>
             ) : (
-              <Link href="/projects" className="text-slate-500">
-                Projects
+              <Link href="/services" className="text-slate-500">
+                Services
               </Link>
             )}
           </div>
@@ -253,7 +253,7 @@ function AppHeader() {
           </div>
 
           {/* Theme switcher large screen */}
-          <div
+          {/* <div
             onClick={() => setTheme(activeTheme)}
             aria-label="Theme Switcher"
             className="ml-8 bg-primary-light dark:bg-ternary-dark p-3 shadow-sm rounded-xl cursor-pointer"
@@ -263,7 +263,7 @@ function AppHeader() {
             ) : (
               <FiSun className="text-gray-200 hover:text-gray-50 text-xl" />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
       <div>

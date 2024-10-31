@@ -1,15 +1,26 @@
 import Image from "next/image";
 
-function AboutClientSingle({ title, image }: { title: string; image: any }) {
+function AboutClientSingle({
+  title,
+  items,
+}: {
+  title: string;
+  items: string[];
+}) {
   return (
-    <div className="py-5 px-10 border bg-secondary-light border-ternary-light dark:border-ternary-dark  shadow-sm rounded-lg mb-5 cursor-pointer">
-      <Image
-        src={image}
-        alt={title}
-        layout="responsive"
-        width={100}
-        height={50}
-      />
+    <div
+      className="py-5 px-10 border bg-secondary-light border-ternary-light dark:border-ternary-dark  shadow-sm rounded-lg mb-5
+  basis-full  sm:basis-5/12 flex-1
+    "
+    >
+      <h1 className="font-bold">{title}</h1>
+      <ul>
+        {items.map((ele) => (
+          <li key={ele} className="list-disc">
+            {ele}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -8,14 +8,14 @@ function AboutClients() {
   const [clients, setClients] = useState(clientsData);
   return (
     <div className="container mt-10 sm:mt-20">
-      <p className="font-general-medium text-2xl sm:text-3xl  text-center text-primary-dark dark:text-primary-light">
+      <p className=" font-bold text-2xl sm:text-3xl  text-center text-primary-dark dark:text-primary-light">
         {clientsHeading}
       </p>
-      <div className="grid grid-cols-2 sm:grid-cols-4 mt-10 sm:mt-14 gap-2">
+      <div className="flex flex-wrap gap-5 mt-8">
         {clients.map((client) => (
           <AboutClientSingle
             title={client.title}
-            image={client.img}
+            items={client.items}
             key={client.id}
           />
         ))}

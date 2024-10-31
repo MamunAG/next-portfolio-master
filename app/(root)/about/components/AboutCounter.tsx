@@ -17,11 +17,11 @@ function AboutCounter() {
           measurement=""
         />
 
-        <CounterItem
+        {/* <CounterItem
           title="Stars on GitHub"
           counter={<span id="githubStarsCounter" />}
           measurement="k+"
-        />
+        /> */}
 
         <CounterItem
           title="Positive feedback"

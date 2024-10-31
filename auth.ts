@@ -8,11 +8,8 @@ import { getUserFromDb } from "./actions/user-action";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // adapter: PrismaAdapter(prisma),
   callbacks: {
-    // authorized: async ({ auth }) => {
-    //   return !!auth;
-    // },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl;
+    authorized: async ({ auth }) => {
+      return !!auth;
     },
   },
   providers: [
@@ -26,6 +23,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const { email, password } = await signInSchema.parseAsync(
             credentials
           );
+
+          // if (email !== "mamun@gmail.com") {
+          //   throw new Error("Invalid credentials.");
+          // }
 
           const pwHash = await saltAndHashPassword(password);
 

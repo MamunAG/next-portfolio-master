@@ -9,8 +9,14 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { SignInServerAction } from "@/components/auth/auth-server-action";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export async function SignIn({ redirectUrl }: { redirectUrl: string }) {
+export async function SignIn() {
+  const session = await auth();
+  if (session) {
+    redirect("/admin");
+  }
   return (
     <div className="flex justify-center items-center min-w-screen min-h-screen">
       <form action={SignInServerAction}>
