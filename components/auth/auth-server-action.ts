@@ -11,5 +11,5 @@ export async function SignInServerAction(formData: any) {
 }
 
 export async function SignOutServerAction() {
-  return await signOut({ redirectTo: "/login", redirect: true });
+  return await signOut({ redirectTo: "/api/auth/signin", redirect: true });
 }
