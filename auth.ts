@@ -12,8 +12,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             const isLoggedIn = !!auth?.user;
             const { pathname } = nextUrl;
           //  const role = auth?.user.role || 'user';
-          if (isLoggedIn) {
-                return Response.redirect(new URL('/', nextUrl));
+          if (pathname.includes('signin')  &&  isLoggedIn) {
+                return Response.redirect(new URL('/admin', nextUrl));
             }
             if (pathname.startsWith('/api/auth/signin') && isLoggedIn) {
                 return Response.redirect(new URL('/', nextUrl));
