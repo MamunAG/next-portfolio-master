@@ -8,16 +8,25 @@ import { getUserFromDb } from "./actions/user-action";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // adapter: PrismaAdapter(prisma),
   callbacks: {
-    authorized: async ({ auth }) => {
-      return !!auth;
-    },
+        authorized({ request: { nextUrl }, auth }) {
+            const isLoggedIn = !!auth?.user;
+            const { pathname } = nextUrl;
+          //  const role = auth?.user.role || 'user';
+            if (pathname.startsWith('/auth/signin') && isLoggedIn) {
+                return Response.redirect(new URL('/', nextUrl));
+            }
+         //   if (pathname.startsWith("/page2") && role !== "admin") {
+           //     return Response.redirect(new URL('/', nextUrl));
+          //  }
+            return !!auth;
+        },
   },
   providers: [
     Credentials({
       credentials: {
-        email: {},
-        password: {},
-      },
+                email: { label: "Email", type: "email", placeholder: "Email" },
+                password: { label: "Password", type: "password", placeholder: "Password" },
+            },
       authorize: async (credentials) => {
         try {
           const { email, password } = await signInSchema.parseAsync(
