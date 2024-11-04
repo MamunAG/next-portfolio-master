@@ -12,7 +12,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             const isLoggedIn = !!auth?.user;
             const { pathname } = nextUrl;
           //  const role = auth?.user.role || 'user';
-            if (pathname.startsWith('/auth/signin') && isLoggedIn) {
+            if (pathname.startsWith('/api/auth/signin') && isLoggedIn) {
                 return Response.redirect(new URL('/', nextUrl));
             }
          //   if (pathname.startsWith("/page2") && role !== "admin") {
