@@ -15,9 +15,10 @@ function ImageSection({ src }: { src: string }) {
 
 function TextSection({ text }: { text: string }) {
   return (
-    <div className="flex justify-center items-center mt-5">
-      <p>{text}</p>
-    </div>
+    <div
+      className="mt-5 ProseMirror"
+      dangerouslySetInnerHTML={{ __html: text }}
+    />
   );
 }
 

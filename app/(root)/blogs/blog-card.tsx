@@ -25,7 +25,12 @@ export default function BlogCard({ blog }: { blog: BlogWithFirstDetailsDto }) {
         </div>
         <div className="flex-1 pl-5">
           <CardTitle>{blog?.title}</CardTitle>
-          <p>{blog?.firstDetails}</p>
+          <div
+            className="ProseMirror"
+            dangerouslySetInnerHTML={{ __html: blog?.firstDetails! }}
+          />
+
+          {/* <p>{blog?.firstDetails}</p> */}
         </div>
       </div>
     </div>
