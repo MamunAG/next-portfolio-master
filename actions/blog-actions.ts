@@ -1,5 +1,3 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
 import { BlogDetails, BlogMaster, BlogTags } from "@prisma/client";
 import { HTTPException } from "hono/http-exception";
