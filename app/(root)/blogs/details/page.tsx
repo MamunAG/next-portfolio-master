@@ -27,7 +27,8 @@ function TextSection({ text }: { text: string }) {
 function BlogDetails() {
   const searchParams = useSearchParams();
 
-  const search = searchParams.get("details");
+  const details = searchParams.get("id");
+  console.log("details", details);
 
   const [blog, setBlog] = React.useState<
     | ({
@@ -47,13 +48,14 @@ function BlogDetails() {
     | null
   >();
 
-  // React.useEffect(() => {
-  //   const getData = async () => {
-  //     // const data = await GetAllBlogById(params.details);
-  //     // setBlog(data);
-  //   };
-  //   getData();
-  // }, [params.details]);
+  React.useEffect(() => {
+    const getData = async () => {
+      const data = await GetAllBlogById(Number(details));
+      console.log(data);
+      setBlog(data);
+    };
+    getData();
+  }, [details]);
 
   console.log(blog);
   if (blog) {

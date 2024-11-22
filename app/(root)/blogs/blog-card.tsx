@@ -10,7 +10,7 @@ export default function BlogCard({ blog }: { blog: BlogWithFirstDetailsDto }) {
   return (
     <div
       className="border rounded-lg shadow w-full p-5 mb-10 hover:cursor-pointer hover:border-slate-400 hover:shadow-lg transition"
-      onClick={() => route.push(`/blogs/${blog?.id}`)}
+      onClick={() => route.push(`/blogs/details?id=${blog?.id}`)}
     >
       <div className="w-full h-full flex flex-row">
         <div>

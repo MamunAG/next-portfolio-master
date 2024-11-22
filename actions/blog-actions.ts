@@ -1,6 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { BlogDetails, BlogMaster, BlogTags } from "@prisma/client";
-import { HTTPException } from "hono/http-exception";
+import axios from "axios";
+import { root } from "./api";
 
 export async function GetAllBlog() {
   const blogs = await prismadb.blogMaster.findMany({
@@ -8,36 +9,29 @@ export async function GetAllBlog() {
   });
   return blogs;
 }
+
 export async function GetAllBlogById(id: number) {
   if (Number.isNaN(id) || id == undefined || id == null || id <= 0) return null;
-
-  const blog = await prismadb.blogMaster.findFirst({
-    include: {
-      BlogDetails: {
-        orderBy: { sortingNo: "asc" },
-      },
-      BlogTags: { include: { tag: true } },
-    },
-    where: { id: Number(id) },
-  });
-  return blog;
+  try {
+    const blog = await axios.get(`${root}/blogs/${id}`);
+    return blog.data;
+  } catch (error) {
+    console.log("err: ", error);
+  }
 }
 export async function GetAllBlogWithFirstDetails() {
-  const blogs = await prismadb.blogMaster.findMany({
-    include: { BlogDetails: true },
-  });
+  const blogs = await axios.get(
+    `${root}/blogs/get-all-blog-with-first-details`
+  );
+  console.log(blogs);
 
   const data: BlogWithFirstDetailsDto[] = [];
-  blogs?.forEach((element) => {
+  blogs?.data?.forEach((element: any) => {
     let item: BlogWithFirstDetailsDto = {
       id: element.id,
       title: element.title,
-      firstDetails: element.BlogDetails?.filter(
-        (v, i) => v.sectionType === "text"
-      )[0]?.text,
-      firstImageUrl: element.BlogDetails?.filter(
-        (v, i) => v.sectionType === "image"
-      )[0]?.imagePreview,
+      firstDetails: element.firstDetails,
+      firstImageUrl: element.firstImageUrl,
     };
 
     data.push(item);
