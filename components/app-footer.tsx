@@ -4,30 +4,31 @@ import {
   FiLinkedin,
   FiGlobe,
   FiYoutube,
+  FiFacebook,
 } from "react-icons/fi";
 import AppFooterCopyright from "./app-footer-copyright";
 
 const socialLinks = [
   {
     id: 1,
-    icon: <FiGlobe />,
+    icon: <FiFacebook />,
     url: "https://www.facebook.com/writer.khayrul.kabir?mibextid=LQQJ4d",
   },
-  {
-    id: 2,
-    icon: <FiGithub />,
-    url: "https://github.com/realstoman",
-  },
-  {
-    id: 3,
-    icon: <FiTwitter />,
-    url: "https://twitter.com/realstoman",
-  },
-  {
-    id: 4,
-    icon: <FiLinkedin />,
-    url: "https://www.linkedin.com/in/realstoman",
-  },
+  //{
+  //  id: 2,
+   // icon: <FiGithub />,
+  //  url: "https://github.com/realstoman",
+ // },
+ // {
+  //  id: 3,
+   // icon: <FiTwitter />,
+ //   url: "https://twitter.com/realstoman",
+ // },
+ // {
+  //  id: 4,
+ //   icon: <FiLinkedin />,
+  //  url: "https://www.linkedin.com/in/realstoman",
+  //},
   {
     id: 5,
     icon: <FiYoutube />,
