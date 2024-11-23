@@ -11,7 +11,7 @@ const socialLinks = [
   {
     id: 1,
     icon: <FiGlobe />,
-    url: "https://www.stoman.me/",
+    url: "https://www.facebook.com/writer.khayrul.kabir?mibextid=LQQJ4d",
   },
   {
     id: 2,
