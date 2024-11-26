@@ -1,16 +1,15 @@
-import prismadb from "@/lib/prismadb";
-import { HireMe, Tag } from "@prisma/client";
+import { HireMe } from "@prisma/client";
+import axios from "axios";
+import { root } from "./api";
 
 export async function GetAllRequest(): Promise<HireMe[]> {
-  return await prismadb.hireMe.findMany();
+  const res = await axios.get(root + `/hire-me`);
+  return res.data;
 }
 
 export async function GetRequestById(id: number): Promise<HireMe | null> {
-  return await prismadb.hireMe.findFirst({
-    where: {
-      id,
-    },
-  });
+  const res = await axios.get(root + `/hire-me/${id}`);
+  return res.data;
 }
 
 export async function Save(hireMe: HireMe): Promise<HireMe> {
@@ -29,58 +28,6 @@ export async function Save(hireMe: HireMe): Promise<HireMe> {
     throw new Error("Please provide a valid contact number.");
   }
 
-  return await prismadb.hireMe.create({
-    data: {
-      name,
-      email,
-      contact,
-      address,
-      createdDate,
-    },
-  });
-}
-
-export async function Update(hireMe: HireMe): Promise<HireMe> {
-  const { id, name, email, contact, address } = hireMe;
-
-  if (Number(id) <= 0) {
-    throw new Error("Please select a request.");
-  }
-  if (Number(id) != Number(id)) {
-    throw new Error("Bad request. Request not consistent.");
-  }
-  if (!name) {
-    throw new Error("Name is required.");
-  }
-
-  return await prismadb.hireMe.update({
-    data: {
-      name,
-      email,
-      contact,
-      address,
-    },
-    where: {
-      id: Number(id),
-    },
-  });
-}
-
-export async function Delete(id: number) {
-  if (Number(id) <= 0) {
-    throw new Error("Hire me request not selected.");
-  }
-
-  const hireMe = await prismadb.hireMe.findFirst({
-    where: { id: Number(id) },
-  });
-
-  if (!hireMe) {
-    throw new Error("Hire me request not found.");
-  }
-  return await prismadb.hireMe.delete({
-    where: {
-      id: Number(id),
-    },
-  });
+  const res = await axios.post(root + `/hire-me`, hireMe);
+  return res.data;
 }

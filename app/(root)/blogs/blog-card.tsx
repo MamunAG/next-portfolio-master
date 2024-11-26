@@ -12,8 +12,8 @@ export default function BlogCard({ blog }: { blog: BlogWithFirstDetailsDto }) {
       className="border rounded-lg shadow w-full p-5 mb-10 hover:cursor-pointer hover:border-slate-400 hover:shadow-lg transition"
       onClick={() => route.push(`/blogs/details?id=${blog?.id}`)}
     >
-      <div className="w-full h-full flex flex-col sm:flex-row">
-        <div>
+      <div className="w-full h-full flex flex-col sm:flex-row justify-center items-center">
+        <div className="mb-3">
           <Image
             // src={"/images/vat.jpg"}
             src={blog?.firstImageUrl!}
@@ -24,9 +24,9 @@ export default function BlogCard({ blog }: { blog: BlogWithFirstDetailsDto }) {
           />
         </div>
         <div className="flex-1 pl-5">
-          <CardTitle>{blog?.title}</CardTitle>
+          <CardTitle className="mb-3 leading-6">{blog?.title}</CardTitle>
           <div
-            className="ProseMirror line-clamp-3"
+            className="ProseMirror sm:line-clamp-3 hidden sm:block"
             dangerouslySetInnerHTML={{ __html: blog?.firstDetails! }}
           />
 

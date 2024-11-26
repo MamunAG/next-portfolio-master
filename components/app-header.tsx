@@ -69,13 +69,20 @@ function AppHeader() {
               {activeTheme === "dark" ? (
                 // <Image
                 <div className="flex items-center">
-                  <button
+                  {/* <button
                     type="button"
                     className="py-1 px-2.5 me-2 text-lg font-bold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200"
                     disabled
                   >
                     K
-                  </button>
+                  </button> */}
+                  <Image
+                    src="/images/logo/logo.jpg"
+                    width={25}
+                    height={25}
+                    alt="Picture of the author"
+                    className="mr-2"
+                  />
                   <h1 className="p-0 m-0 ml-1 font-semibold text-lg">Khokon</h1>
                 </div>
               ) : (

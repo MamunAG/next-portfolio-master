@@ -42,11 +42,12 @@ export default function Page() {
             <h3
               className="
                         font-general-regular 
-                        text-center text-secondary-dark
+                        text-secondary-dark
                         dark:text-ternary-light
                         text-md
                         sm:text-xl
                         mb-3
+                        text-justify
                         "
             >
               আশা করি আল্লাহর অশেষ রহমতে আপনি ভালো আছেন। একজন দায়িত্বশীল
@@ -68,7 +69,7 @@ export default function Page() {
             <h3
               className="
                         font-general-regular 
-                        text-center text-secondary-dark
+                        text-justify text-secondary-dark
                         dark:text-ternary-light
                         text-md
                         sm:text-xl
@@ -92,7 +93,7 @@ export default function Page() {
             <h3
               className="
                 font-general-regular 
-                text-center text-secondary-dark
+                text-justify text-secondary-dark
                 dark:text-ternary-light
                 text-md
                 sm:text-xl
@@ -119,7 +120,7 @@ export default function Page() {
             <h3
               className="
                 font-general-regular 
-                text-center text-secondary-dark
+                text-justify text-secondary-dark
                 dark:text-ternary-light
                 text-md
                 sm:text-xl

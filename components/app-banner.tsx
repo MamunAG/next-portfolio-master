@@ -15,6 +15,14 @@ function AppBanner() {
       className="flex flex-col container sm:justify-between items-center sm:flex-row mt-5 md:mt-2"
     >
       <div className="w-full sm:w-3/6 text-left">
+        <div className=" ml-5 mb-2 flex justify-center sm:justify-start">
+          <Image
+            src="/images/logo/logo.jpg"
+            width={150}
+            height={150}
+            alt="Picture of the author"
+          />
+        </div>
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

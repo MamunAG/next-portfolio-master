@@ -1,18 +1,18 @@
 import prismadb from "@/lib/prismadb";
 import { ContactMessage } from "@prisma/client";
+import axios from "axios";
+import { root } from "./api";
 
 export async function GetAllContactMessage(): Promise<ContactMessage[]> {
-  return await prismadb.contactMessage.findMany();
+  const res = await axios.get(root + `/contact-msg`);
+  return res.data;
 }
 
 export async function GetContactMessageById(
   id: number
 ): Promise<ContactMessage | null> {
-  return await prismadb.contactMessage.findFirst({
-    where: {
-      id,
-    },
-  });
+  const res = await axios.get(root + `/contact-msg/${id}`);
+  return res.data;
 }
 
 export async function Save(
@@ -33,60 +33,6 @@ export async function Save(
     throw new Error("Please provide a valid contact number.");
   }
 
-  return await prismadb.contactMessage.create({
-    data: {
-      name,
-      email,
-      subject,
-      message,
-      createdDate,
-    },
-  });
-}
-
-export async function Update(
-  contactMessage: ContactMessage
-): Promise<ContactMessage> {
-  const { id, name, email, subject, message } = contactMessage;
-
-  if (Number(id) <= 0) {
-    throw new Error("Please select a request.");
-  }
-  if (Number(id) != Number(id)) {
-    throw new Error("Bad request. Request not consistent.");
-  }
-  if (!name) {
-    throw new Error("Name is required.");
-  }
-
-  return await prismadb.contactMessage.update({
-    data: {
-      name,
-      email,
-      subject,
-      message,
-    },
-    where: {
-      id: Number(id),
-    },
-  });
-}
-
-export async function Delete(id: number) {
-  if (Number(id) <= 0) {
-    throw new Error("Hire me request not selected.");
-  }
-
-  const contactMessage = await prismadb.contactMessage.findFirst({
-    where: { id: Number(id) },
-  });
-
-  if (!contactMessage) {
-    throw new Error("Hire me request not found.");
-  }
-  return await prismadb.contactMessage.delete({
-    where: {
-      id: Number(id),
-    },
-  });
+  const res = await axios.post(root + `/contact-msg`, contactMessage);
+  return res.data;
 }

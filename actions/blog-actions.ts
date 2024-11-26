@@ -21,7 +21,7 @@ export async function GetAllBlogById(id: number) {
 }
 export async function GetAllBlogWithFirstDetails() {
   const blogs = await axios.get(
-    `${root}/blogs/get-all-blog-with-first-details`
+    `${root}/blogs/get-all-blog-with-first-details/${new Date()}`
   );
   console.log(blogs);
 
